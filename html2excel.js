@@ -64,7 +64,7 @@ function loadTableOptions(table) {
         '<a id="tcd_options_conditional_format"><i class="fas fa-palette"></i><br/>Conditional formatting</a>' +
         '<a id="tcd_option_format"><i class="fas fa-align-center"></i><br/>Format cells</a>';
 
-    // Context menu				
+    // Context menu
     var rightclick_menu = '<div id="contextMenu" class="dropdown clearfix">' +
         '<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu" style="display:block;position:static;">' +
         '<li><a tabindex="-1" href="#" data-tcd-context-option="cut" class="btn btn-link width100 tcd_context_options">Cut</a></li>' +
@@ -405,7 +405,7 @@ function loadTableOptions(table) {
 
 	var pivot_container = '<div id="tcd_pivot" class="hide"></div>';
 	$("#html2excel_pivot_container").append(pivot_container);
-	
+
 	var graph_container = '<div id="div_graph_container" class="hide"></div>';
 	$("#html2excel_chart_container").append(graph_container);
 
@@ -415,7 +415,7 @@ function loadTableOptions(table) {
 function init_table_options(table) {
 	var $this = table;
 	var table_name = $this.attr("id");
-	
+
     $(".html2excel_action_menu table tr td a").click(function(e) {
         var id = $(this).attr("id");
 		$(".html2excel_action_menu table tr td a").removeClass("show_menu");
@@ -489,7 +489,7 @@ function init_table_options(table) {
 	$("#tcd_option_format").click(function(e) {
         $("#modal_format").modal("show");
     });
-	
+
 	$(".tcd_format_options").click(function(e) {
         format_options($(this).attr("data-tcd-format-option"), table);
     });
@@ -497,23 +497,23 @@ function init_table_options(table) {
 	$("#tcd_format_font_size").change(function(e) {
 		format_options("fontselect", table);
 	});
-	
+
 	$("#tcd_format_font_style").change(function(e) {
 		format_options("fontstyle", table);
 	});
-	
+
 	$("input[name='format-font-color']").change(function(e) {
 		format_options("fontcolor", table);
 	});
-	
+
 	$("input[name='format-cell-color']").change(function(e) {
 		format_options("cellcolor", table);
-	});	
-	
+	});
+
 	$("#chart_label").on("change", function(){
 	    $("#chart_label").text($(this).val());
 	});
-	
+
 	$("#tcd_options_freeze_pa").click(function(e) {
 
     });
@@ -524,13 +524,13 @@ function init_table_options(table) {
 	});
 
 	$("#tcd_export_csv").click(function(e) {
-	
+
 	});
-	
+
 	$("#tcd_export_json").click(function(e) {
 		downloadAsJson($this);
 	});
-	
+
 	$("#tcd_export_copy").click(function(e) {
 		selectElementContents(document.getElementById(table_name));
 	});
@@ -548,8 +548,8 @@ function init_table_options(table) {
 		else
 			$this.addClass("tc_fixed_first_col");
     });
-	
-	
+
+
 	// Start : Select column
     table.find("thead tr th").click(function(e) {
         var colid = $(this).parent().children().index($(this));
@@ -1169,24 +1169,24 @@ function right_click($this) {
 function manage_context_options(option, table) {
     var $this = table;
     let target = $this.find("tbody tr:nth-child(" + tcdoptionsrowid + ") td:nth-child(" + tcdoptionscolid + ")").focus()[0];
-	
+
     switch (option) {
 		case "mergerows":
 			merge_rows($this);
 			break;
 		case "mergecells":
 			merge_rows($this);
-			
+
 			var trows = endrow - startrow + 1;
 			var selectedrows = table.find("tr td.selected:last").attr("rowspan");
 			if(selectedrows > 1) {
 			  trows = parseInt(trows) + parseInt(selectedrows) - 1;
 			}
-            
+
 			table.find("tr td.selected:first").attr("rowspan",trows);
 			table.find("tr td.selected:first").removeClass("selected");
 			table.find("tr td.selected").remove();
-			
+
 			break;
         case "cut":
             copy_to_clipboard(target);
@@ -1199,26 +1199,26 @@ function manage_context_options(option, table) {
             $this.find("tbody tr:nth-child(" + tcdoptionsrowid + ") td:nth-child(" + tcdoptionscolid + ")").text(get_from_clipboard());
             break;
         case "insertcolright":
-            var newColumn = [], 
+            var newColumn = [],
 			      colsCount = table.find('tr > td:last').index();
 			table.find("tr").each( function(rowIndex) {
 			  	var cell = $("<t"+(rowIndex == 0 ?  "h" : "d")+"/>").text((rowIndex == 0 ?  "New col" : ""));
-			  	newColumn.push( 
+			  	newColumn.push(
 			  	  tcdoptionscolid > colsCount
 			  	        ? cell.appendTo(this)
 			  	        : cell.insertBefore( $(this).children().eq(tcdoptionscolid) )
 			  	);
 			});
-			
+
 			right_click($this);
             table_inline_editing($this);
             break;
         case "insertcolleft":
-			var newColumn = [], 
+			var newColumn = [],
 			      colsCount = table.find('tr > td:last').index();
 			table.find("tr").each( function(rowIndex) {
 			  	var cell = $("<t"+(rowIndex == 0 ?  "h" : "d")+"/>").text((rowIndex == 0 ?  "New col" : ""));
-			  	newColumn.push( 
+			  	newColumn.push(
 			  	  (tcdoptionscolid - 1) > colsCount
 			  	        ? cell.appendTo(this)
 			  	        : cell.insertBefore( $(this).children().eq((tcdoptionscolid - 1)) )
@@ -1301,7 +1301,7 @@ function merge_rows($this) {
 
 function copy_to_clipboard(target) {
 	target = $("#tcd_container").find("table tr td.selected")[0];
-	
+
 	// var srow = target.find("tr td.selected:first").parent().index();
 	// var lrow = target.find("tr td.selected:last").parent().index();
 	// var scol = target.find("tr td.selected:first").index();
@@ -1341,7 +1341,7 @@ function table_resize($this) {
 function format_options(option, table) {
 	var $this = table;
 	switch(option){
-		case "up":		
+		case "up":
 			$this.find("td.selected").each(function(){
 				var size = $(this).css('font-size');
 				size = parseInt(size.substring(0, size.length - 2)) + 1;
@@ -1384,7 +1384,7 @@ function format_options(option, table) {
 				$(this).removeClass("left");
 				$(this).removeClass("right");
 				$(this).removeClass("center");
-				
+
 				if($(this).hasClass("left"))
 					$(this).removeClass("left");
 				else
@@ -1396,7 +1396,7 @@ function format_options(option, table) {
 				$(this).removeClass("left");
 				$(this).removeClass("right");
 				$(this).removeClass("center");
-				
+
 				if($(this).hasClass("center"))
 					$(this).removeClass("center");
 				else
@@ -1408,7 +1408,7 @@ function format_options(option, table) {
 				$(this).removeClass("left");
 				$(this).removeClass("right");
 				$(this).removeClass("center");
-				
+
 				if($(this).hasClass("right"))
 					$(this).removeClass("right");
 				else
@@ -1457,17 +1457,17 @@ function format_options(option, table) {
 
 function create_pivot(table) {
 	setup_pivot_area();
-  	
+
   	var trows = table.find("tbody tr").length;
   	var tcols = table.find("thead tr th").length;
-  	
+
   	var headerslist = [];
   	for(i=1;i<=tcols;i++) {
   	  var header_value = table.find("thead tr th:nth-child("+i+")").text();
   	  headerslist.push(header_value);
   	  $(".dimension_field_name").append("<a id='"+i+"'>"+header_value+"</a>");
   	}
-  
+
 	enable_drag_drop_pivot(table);
   	enable_filter_selection(table);
 }
@@ -1475,7 +1475,7 @@ function create_pivot(table) {
 function setup_pivot_area() {
 	var pivot_container = '<div id="div_pivot_container"></div>';
 	$("#tcd_pivot").append(pivot_container);
-	
+
   	var container = '<div class="row"><div class="col-md-3 pivot_dimensions"></div><div class="col-md-9 pivot_values"></div></div>';
   	$("#div_pivot_container").append(container);
   	var dimensions = '<div class="row"><div class="col-md-12"><p>Single level pivot table builder</p><p>Field name</p><div class="dimension_field_name"></div></div></div><div class="row"><div class="col-md-6"><p>Filters</p><div class="dimension_filters dimension_droppable"></div></div><div class="col-md-6"><p>Columns</p><div class="dimension_columns dimension_droppable"></div></div></div><div class="row"><div class="col-md-6"><p>Rows</p><div class="dimension_rows dimension_droppable"></div></div><div class="col-md-6"><p>Values</p><div class="dimension_values dimension_droppable"></div></div></div>';
@@ -1496,7 +1496,7 @@ function enable_drag_drop_pivot(table) {
         cursor: "move",
 		stack: ".dimension_field_name a"
 	});
-	
+
 	$(".dimension_field_name").droppable({
         accept: ".dimension_droppable > a",
         drop: function(event, ui) {
@@ -1504,20 +1504,20 @@ function enable_drag_drop_pivot(table) {
 			load_pivot_template(table);
         }
     });
-	
+
 	$(".dimension_droppable").droppable({
         accept: ".dimension_field_name > a",
         drop: function(event, ui) {
             $(this).append(ui.draggable.clone());
 			load_pivot_template(table);
-			
+
             $(this).find("a").dblclick(function() {
                 var elid = ui.draggable.attr("id");
                 var container = $(this).parent().attr('class').split(' ')[0]
                 $("." + container).find("#" + elid).remove();
                 load_pivot_template(table);
             });
-			
+
         }
     });
 }
@@ -1527,16 +1527,16 @@ function load_pivot_template(table) {
 	$("#pivot_table").remove();
 	$("#rowlabelfilter").empty();
 	//$("#filter_container").remove();
-	
+
 	// pivot math operation
 	var pivot_value_action = $("#pivot_value_action").val();
-	
+
 	// dimension elements
 	var filter_el = 0,
 		col_el = 0,
 		row_el = 0,
 		value_el = 0;
-	
+
 	// all data's
 	var filterdata_all = [],
 		columndata_all = [],
@@ -1544,7 +1544,7 @@ function load_pivot_template(table) {
 		valuedata_all = [],
 		uniqueNames_all = [],
 		rowlabelfilter_all = [];
-	
+
 	// unique data's
 	var filterdata = [],
 		columndata = [],
@@ -1552,20 +1552,20 @@ function load_pivot_template(table) {
 		valuedata = [],
 		uniqueNames = [],
 		rowlabelfilter = [];
-		
+
 	// total row and column size for pivot table
 	var pivot_col_length = 0,
 		pivot_row_length = 0,
 		table_row_length = 0;
-		
+
 	table_row_length = table.find("tbody tr").length;
-	
+
 	// get first dimension element
 	filter_el = $(".dimension_filters").find("a:first").attr("id");
 	col_el = $(".dimension_columns").find("a:first").attr("id");
 	row_el = $(".dimension_rows").find("a:first").attr("id");
 	value_el = $(".dimension_values").find("a:first").attr("id");
-		
+
 	// push dimension element data to respective arrays
 	if(filter_el > 0) {
 		table.find("tbody td:nth-child("+filter_el+")").each(function() {
@@ -1574,18 +1574,18 @@ function load_pivot_template(table) {
 				filterdata_all.push($(this).text()); // array to store all data
 			}
 		});
-		
+
 		// filtering out unique. will be used in populating table
 		uniqueNames = [];
 		$.each(filterdata, function(i, el) {
 	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
 	    });
 	    filterdata = uniqueNames;
-	
+
 		// sorting the array
 		filterdata.sort();
 	}
-	
+
 	if(col_el > 0) {
 		table.find("tbody td:nth-child("+col_el+")").each(function() {
 		    if ($.inArray($(this).text(), columndata) == -1) {
@@ -1593,19 +1593,19 @@ function load_pivot_template(table) {
 				columndata_all.push($(this).text());
 			}
 		});
-		
+
 		uniqueNames = [];
 		$.each(columndata, function(i, el) {
 	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
 	    });
-	
+
 	    columndata = uniqueNames;
-	
+
 		columndata.sort();
-		
+
 		pivot_col_length = parseInt(columndata.length) + 2;
 	}
-		
+
 	if(row_el > 0) {
 		table.find("tbody td:nth-child("+row_el+")").each(function() {
 		    if ($.inArray($(this).text(), rowdata) == -1) {
@@ -1613,22 +1613,22 @@ function load_pivot_template(table) {
 				rowdata_all.push($(this).text());
 			}
 		});
-		
+
 		uniqueNames = [];
 		$.each(rowdata, function(i, el) {
 	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
 	    });
 	    rowdata = uniqueNames;
-	
+
 		rowdata.sort();
-		
-		pivot_row_length = parseInt(rowdata.length) + 2;		
+
+		pivot_row_length = parseInt(rowdata.length) + 2;
 	}
-		
+
 	if(value_el > 0) {
 		$("#pivot_value_action").show();
 		$("#pivot_value_action").val("count");
-	
+
 		table.find("tbody td:nth-child("+value_el+")").each(function() {
 		    if ($.inArray($(this).text(), valuedata) == -1) {
 		        valuedata.push($(this).text());
@@ -1638,40 +1638,40 @@ function load_pivot_template(table) {
 	}
 	else {
 		$("#pivot_value_action").hide();
-	}	
-		
+	}
+
 
 	var pivot_table = '<table id="pivot_table"></table>';
 	$(".pivot_table_container").append(pivot_table);
-	
+
 	// setup dimension filter dropdown
 	if(filter_el > 0) {
 		if($(".pivot_table_container").find("#filter_container").length == 0)
 		{
 			var filter_container_table = '<table id="filter_container"><tr><td colspan="2">Filter by</td></tr><tr><td><span id="span_filter_container"></span></td><td><select id="select_filter_container"></select></td></tr></table>';
 			$("#pivot_table").before(filter_container_table);
-			
+
 			$("#span_filter_container").text($(".dimension_filters").find("a:first").text());
-			
-			$.each(filterdata, function(key, value) {   
+
+			$.each(filterdata, function(key, value) {
 			     $('#select_filter_container')
 			         .append($("<option></option>")
 			                    .attr("value",key)
-			                    .text(value)); 
+			                    .text(value));
 			});
 			$('#select_filter_container').prepend($("<option value='-1' selected='selected'>All</option>"));
 		}
 	}
-	
+
 	var colFilter = "";
-	
+
 	var rgt = [],
 		cgt = [];
-	
+
 	for(i = 0; i < pivot_row_length; i++) {
 		var tr = "";
 		var td = "";
-		
+
 		for(j = 0; j < pivot_col_length; j++) {
 			if (i == 0) {
 				if(j == 0) {
@@ -1683,7 +1683,7 @@ function load_pivot_template(table) {
 				else {
 					td += "<th>" + columndata[j - 1] + "</th>";
 				}
-				
+
 				if(j == 1) {
 					colFilter += "<th><select id='collabelfilter'></select></th>";
 				}
@@ -1706,9 +1706,9 @@ function load_pivot_template(table) {
 				if(j == 0) {
 					td += "<td>" + rowdata[i - 1] + "</td>";
 				}
-				else if(j == pivot_col_length - 1) {					
+				else if(j == pivot_col_length - 1) {
 					var vcount = rgt.length;
-					
+
 					var vsum = 0;
 					$.each(rgt, function (index, value) {
 					    vsum = parseInt(vsum) + parseInt(value);
@@ -1717,28 +1717,28 @@ function load_pivot_template(table) {
 						var vavg = 0;
 					else
 						var vavg = (parseInt(vsum) / parseInt(rgt.length)).toFixed(2)
-						
+
 					var vmax = Math.max.apply(null, rgt) == -Infinity ? "" : Math.max.apply(null, rgt);
 					vmax == 0 ? "" : vmax;
 					var vmin = Math.min.apply(null, rgt) == Infinity ? "" : Math.min.apply(null, rgt);
 					vmin == 0 ? "" : vmin;
-					
+
 					td += '<td data-attr-count="'+vcount+'" data-attr-sum="'+vsum+'" data-attr-avg="'+vavg+'" data-attr-max="'+vmax+'" data-attr-min="'+vmin+'">' + vcount +'</td>';
-										
+
 					rgt = [];
 				}
 				else {
 					var value = "";
-					
+
 					if(value_el > 0) {
-						
+
 						var rdata = rowdata[i - 1];
 						var cdata = columndata[j - 1];
 						var vdata = valuedata_all[j - 1];
-						
+
 						var count = 0;
 						var sum = 0;
-						
+
 						var ftemp = [];
 						var fdata = "";
 						if(filter_el > 0) {
@@ -1747,7 +1747,7 @@ function load_pivot_template(table) {
                         	});
 							fdata = $( "#select_filter_container option:selected" ).text();
 						}
-						
+
 						var rtemp = [];
                         table.find("tbody tr td:nth-child(" + row_el + ")").each(function(index) {
                             rtemp.push($(this).text());
@@ -1763,7 +1763,7 @@ function load_pivot_template(table) {
                             var v = $(this).text().replace(/[^a-zA-Z0-9]/g, "")
                             vtemp.push(v);
                         });
-						
+
 						var minmax = [];
 						for(x=0; x<rtemp.length; x++) {
 							if(filter_el == 0 || fdata == "All" || fdata == "") {
@@ -1783,7 +1783,7 @@ function load_pivot_template(table) {
 								}
 							}
 						}
-						
+
 						var vcount = count;
 						var vsum = sum;
 						if(sum == 0 ||  count == 0)
@@ -1794,10 +1794,10 @@ function load_pivot_template(table) {
 						vmax == 0 ? "" : vmax;
 						var vmin = Math.min.apply(null, minmax) == Infinity ? 0 : Math.min.apply(null, minmax);
 						vmin == 0 ? "" : vmin;
-						
+
 						value = vcount;
 					}
-										
+
 					if(value == 0)
 						td += "<td></td>";
 					else
@@ -1805,7 +1805,7 @@ function load_pivot_template(table) {
 				}
 			}
 		}
-		
+
 		if(i == 0) {
 			tr = "<thead><tr>" + td + "</tr></thead>";
 		}
@@ -1818,24 +1818,24 @@ function load_pivot_template(table) {
 		else {
 			tr = "<tr>" + td + "</tr>";
 		}
-		
+
 		$("#pivot_table").append(tr);
 	}
-	
+
 	$("#pivot_table").find("thead").prepend("<tr>" + colFilter + "</tr>");
-	
-	
+
+
 	if(value_el > 0) {
 		var trows = $("#pivot_table tbody tr").length;
 		var tcols = $("#pivot_table thead tr:last-child th").length;
-		
+
 		for(x = 1; x < tcols; x++) {
 			var cgt_count_a = [];
 			var cgt_sum_a = [];
 			var cgt_avg_a = [];
 			var cgt_max_a = [];
 			var cgt_min_a = [];
-			
+
 			$("#pivot_table tbody tr").each(function() {
 				$(this).find("td").each(function(eqindex){
 					if(eqindex == x) {
@@ -1849,22 +1849,22 @@ function load_pivot_template(table) {
 					}
 				})
 			});
-			
+
 			var cgt_count = 0;
 			$.each(cgt_count_a, function (index, value) {
 				if(!isNaN(value) && value.length != 0) {
 			    	cgt_count = parseInt(cgt_count) + parseInt(value);
 				}
 			});
-			
+
 			var cgt_sum = 0;
 			$.each(cgt_sum_a, function (index, value) {
 				if(!isNaN(value) && value.length != 0) {
 			    	cgt_sum = parseInt(cgt_sum) + parseInt(value);
 				}
 			});
-			
-			
+
+
 			var cgt_avg_sum = 0;
 			var cgt_avg_count = 0;
 			$.each(cgt_avg_a, function (index, value) {
@@ -1875,47 +1875,47 @@ function load_pivot_template(table) {
 				}
 			});
 			var cgt_avg = (cgt_avg_sum / cgt_avg_count).toFixed(2);
-				
+
 			var cgt_max = Math.max.apply(null, cgt_max_a) == -Infinity ? "" : Math.max.apply(null, cgt_max_a);
 			cgt_max == 0 ? "" : cgt_max;
 			var cgt_min = Math.min.apply(null, cgt_min_a) == Infinity ? "" : Math.min.apply(null, cgt_min_a);
 			cgt_min == 0 ? "" : cgt_min;
-			
+
 			cgt = [];
-			
+
 			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-count", cgt_count);
 			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-sum", cgt_sum);
 			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-avg", cgt_avg);
 			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-max", cgt_max);
 			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-min", cgt_min);
-			
+
 			$("#pivot_table tbody tr:last-child td").eq(x).text(cgt_count);
 		}
 	}
-	
-	
-	$.each(rowdata, function(key, value) {   
+
+
+	$.each(rowdata, function(key, value) {
 	     $('#rowlabelfilter')
 	         .append($("<option></option>")
 	                    .attr("value",key)
-	                    .text(value)); 
-	});	
+	                    .text(value));
+	});
 	$('#rowlabelfilter').prepend($("<option value='-1' selected='selected'>Row labels</option>"));
-	
-	$.each(columndata, function(key, value) {   
+
+	$.each(columndata, function(key, value) {
 	     $('#collabelfilter')
 	         .append($("<option></option>")
 	                    .attr("value",key)
-	                    .text(value)); 
+	                    .text(value));
 	});
-	$('#collabelfilter').prepend($("<option value='-1' selected='selected'>Column labels</option>"));	
-		
+	$('#collabelfilter').prepend($("<option value='-1' selected='selected'>Column labels</option>"));
+
 	enable_filter_selection(table);
 }
 
 function enable_filter_selection(table) {
 	var index = -1;
-	
+
 	$("#pivot_value_action").change(function(){
 		//load_pivot_template(table);
 		switch($(this).val()) {
@@ -1961,10 +1961,10 @@ function enable_filter_selection(table) {
 			break;
 		}
 	});
-	
+
 	$("#rowlabelfilter").change(function() {
 		var text = $("#rowlabelfilter option:selected").text();
-		
+
 		if(text == "Row labels") {
 			$("#pivot_table").find("tbody tr").css("color", "black");
 			$("#pivot_table").find("tbody tr").css("background-color", "transparent");
@@ -1977,7 +1977,7 @@ function enable_filter_selection(table) {
 					}
 				});
 			});
-			
+
 			$("#pivot_table").find("tbody tr").css("color", "black");
 			$("#pivot_table").find("tbody tr").css("background-color", "transparent");
 			$("#pivot_table").find("tbody tr").eq(index).css("color", "white");
@@ -1987,7 +1987,7 @@ function enable_filter_selection(table) {
 
 	$("#collabelfilter").change(function() {
 		var text = $("#collabelfilter option:selected").text();
-		
+
 		if(text == "Column labels") {
 			$("td, th").css("color", "black");
 			$("td, th").css("background-color", "transparent");
@@ -1998,9 +1998,9 @@ function enable_filter_selection(table) {
 					if($(this).text() == text) {
 						index = $(this).index();
 					}
-				}) 
+				})
 			});
-			
+
 			$("#pivot_table").find("td, th").css("color", "black");
 			$("#pivot_table").find("td, th").css("background-color", "transparent");
 			$("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("background-color", "#D50000");
@@ -2022,7 +2022,7 @@ function enable_filter_selection(table) {
 
 function create_charts(table) {
     setup_graph_area(table);
-    enable_drag_drop_pivot(table);
+    enable_drag_drop_chart(table);
 }
 
 function setup_graph_area(table) {
@@ -2049,7 +2049,7 @@ function setup_graph_area(table) {
 			+'<a id="doughnut">Doughnut chart</a>'
 			+'<a id="line">Line chart</a>';
 			//+'<a id="area" class="chart_active">Area chart</a>';
-			
+
     $(".graph_type").append(charttype);
 
     var trows = table.find("tbody tr").length;
@@ -2069,7 +2069,7 @@ function setup_graph_area(table) {
 			$(this).removeClass("chart_active");
 		});
 		$(this).addClass("chart_active");
-		
+
 	    var row_el = $(".chart_row").find("a:first").attr("id");
 	    var col_el = $(".chart_column").find("a:first").attr("id");
 		if (row_el > 0 && col_el > 0) {
@@ -2078,7 +2078,7 @@ function setup_graph_area(table) {
 	});
 }
 
-function enable_drag_drop_pivot(table) {
+function enable_drag_drop_chart(table) {
     $('.dimension_container a').draggable({
         cancel: "a.ui-icon",
         revert: "invalid",
@@ -2153,7 +2153,7 @@ function load_chart(table, charttype) {
 
 	var col_total =  0;
 	for(var i=0;i<columndata.length;i++)
-	{                  
+	{
 		if(isNaN(columndata[i])) {
 	    	continue;
 	 	}
@@ -2161,7 +2161,7 @@ function load_chart(table, charttype) {
 	}
 
 	var chartarea_width = 500;
-	
+
 	if(columndata.length > 0 && rowdata.length > 0) {
 		switch(charttype) {
 			case "bar":
@@ -2202,71 +2202,71 @@ function draw_bar_chart(rowdata, columndata) {
 	var bardata = "";
 	var counter = 50;
 	var chart_height = 32 * rowdata.length;
-	
+
 	var max_value = Math.max.apply(Math, columndata);
-	
+
 	for(i = 0; i < rowdata.length; i++) {
 		var bar_width = Math.ceil((parseInt(columndata[i]) / max_value) * 100);
-		
+
 		var translate = parseInt(counter) + 15;
 		var translate_data = 500 * bar_width / 100;
 		var translate_data2 = counter + 15;
-		
+
 		bardata += '<g id="'+rowdata[i]+'" role="listitem">'
 				+'<rect class="bar" x="10" y="'+counter+'" width="'+bar_width+'%" height="20" role="presentation" stroke="#0099FF" fill="#0099FF"></rect>'
 				+'<text class="series" transform="translate(0.1 '+translate+')" role="presentation" style="text-anchor: end">'+rowdata[i]+'</text>'
 				+'<text class="data" transform="translate('+translate_data+' '+translate_data2+')" style="text-anchor: end" fill="white">'+columndata[i]+'</text>'
 			+'</g>';
-			
+
 		counter = counter + 30;
 	}
 	bardata = '<g id="bars" role="list" aria-label="bar graph">' + bardata + '</g>';
 	bardata = bardata + '<line class="af" x1="42.2" y1="'+chart_height+'" x2="42.2" y2="43.4" role="presentation"></line>';
 	bardata = '<svg width="500" height="'+chart_height+'" viewBox="0 0 500 '+chart_height+'">' + bardata + '</svg>';
-	
+
 	$(".graph_container_graphs").append(bardata);
 }
 
 function draw_pie_chart(rowdata, columndata, col_total) {
-	
+
 	var pieslice_json = "";
 	var slices = [];
 	var legend_table = "";
 	var pie_color = [];
-	
+
 	for(i = 0; i < rowdata.length; i++) {
 		var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2));
-		
+
 		var piecolor = "";
 		do {
 			piecolor = getRandomColor();
 		}while(jQuery.inArray(piecolor, pie_color) !== -1)
-		
-		
+
+
 		let pie_size_el = {
 		  percent: pie_size,
 		  color: piecolor
 		};
 		slices.push(pie_size_el);
-		
+
 		legend_table += '<tr><td style="background-color:'+piecolor+'">'+rowdata[i]+ ' - '+ pie_size +'%</td></tr>';
 	}
 	legend_table = '<table class="tbl_pie_legends">'+legend_table+'</table>';
-	
+
 	var svgel = '<svg id="html2excel_pie_chart" viewBox="-1 -1 2 2" style="transform: rotate(-90deg)" width="500" height="500"></svg>';
 	var div_pie = '<div class="row"><div class="col-md-9">'+svgel+'</div><div class="col-md-3">'+legend_table+'</div></div>';
-	$(".graph_container_graphs").append(div_pie);	
-	
+	$(".graph_container_graphs").append(div_pie);
+
 	let cumulativePercent = 0;
-    
+
 	function getCoordinatesForPercent(percent) {
 	  	const x = Math.cos(2 * Math.PI * percent);
 	  	const y = Math.sin(2 * Math.PI * percent);
 	  	return [x, y];
 	}
-    
+
 	var svgpath = "";
-	
+
 	slices.forEach(slice => {
 	  	const [startX, startY] = getCoordinatesForPercent(cumulativePercent);
 	  	cumulativePercent = parseFloat(cumulativePercent) + parseFloat(slice.percent);
@@ -2277,29 +2277,29 @@ function draw_pie_chart(rowdata, columndata, col_total) {
 	  	  `A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`,
 	  	  `L 0 0`, // Line
 	  	].join(' ');
-    
+
 	  	const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 	  	pathEl.setAttribute('d', pathData);
 	  	pathEl.setAttribute('fill', slice.color);
-	
+
 		$("#html2excel_pie_chart").append(pathEl);
 	});
 }
 
 function draw_column_chart(rowdata, columndata, col_total) {
-	
+
 	var total_bars = columndata.length;
 	var bar_width = 40;
 	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
-	
+
 	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
 	max_bar_height = parseFloat(max_bar_height) + 50;
-	
+
 	var labelxval = parseInt(max_bar_height) + 5;
-	
+
 	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
 	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	
+
 	var xaxis_label = "";
 	var xlabel_start = 70
 	for(i = 0; i < rowdata.length; i++) {
@@ -2307,7 +2307,7 @@ function draw_column_chart(rowdata, columndata, col_total) {
 		xlabel_start = parseInt(xlabel_start) + 40;
 	}
 	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
-	
+
 	var yaxis_grid = "";
 	var total_grid_lines = 10;
 	var grid_line_gap = max_bar_height / total_grid_lines;
@@ -2317,21 +2317,21 @@ function draw_column_chart(rowdata, columndata, col_total) {
 		y_val = parseInt(y_val) + parseInt(grid_line_gap);
 	}
 	yaxis_grid = '<g class="col_y_grid_line">'+yaxis_grid+'</g>';
-	
+
 	var rect = "";
 	var xaxis_bar_text = "";
 	var x2 = 42;
 	for(i = 0; i < rowdata.length; i++) {
 		var y = parseInt(max_bar_height) -  parseInt(columndata[i]);
 		rect += '<rect width="40" height="'+columndata[i]+'" x="'+x2+'" y="'+y+'" style="fill:#0099FF;"></rect>';
-		
+
 		var newx = parseInt(x2)+parseInt(10);
 		var newy = parseInt(y)-parseInt(5);
 		xaxis_bar_text += '<text x="'+newx+'" y="'+newy+'">'+columndata[i]+'</text>';
-		
+
 		x2 = parseInt(x2) + 42;
 	}
-	
+
 	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+yaxis_grid+xaxis_label+rect+xaxis_bar_text+'</svg>';
 	$(".graph_container_graphs").append(svg);
 }
@@ -2340,10 +2340,10 @@ function draw_doughnut_chart(rowdata, columndata, col_total) {
 	var radius = 15;
 	var cx = 21;
 	var cy = 21;
-	
+
 	var hole = '<g class="donut-hole"><circle cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="#fff"></circle></g>';
 	var ring = '<g class="donut-ring"><circle cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle></g>';
-	
+
 	var segment = "";
 	var legend_table = "";
 	var offset = 25;
@@ -2351,38 +2351,38 @@ function draw_doughnut_chart(rowdata, columndata, col_total) {
 		var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2)) * 100;
 		var pie_size_balance = parseFloat(100) - parseFloat(pie_size);
 		var piecolor = getRandomColor();
-		
+
 		if(i > 0)
 			offset = parseInt(offset) + parseFloat(pie_size);
-		
+
 		segment += '<circle data-per="'+pie_size+'" cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="transparent" stroke="'+piecolor+'" stroke-width="3" stroke-dasharray="'+pie_size+' '+pie_size_balance+'" stroke-dashoffset="'+offset+'"></circle>';
-		
+
 		legend_table += '<tr><td style="background-color:'+piecolor+'">'+rowdata[i]+ ' - '+ pie_size +'%</td></tr>';
 	}
 	segment = '<g class="donut-segment">'+segment+'</g>';
 	legend_table = '<table class="tbl_pie_legends">'+legend_table+'</table>';
 
 	var svg = '<svg width="300px" height="300px" viewBox="0 0 42 42" class="donut">'+hole+ring+segment+'</svg>';
-	
+
 	var doughnut_chart = '<div class="row"><div class="col-md-9">'+svg+'</div><div class="col-md-3">'+legend_table	+'</div></div>';
-	
+
 	$(".graph_container_graphs").append(doughnut_chart);
 }
 
 function draw_line_chart(rowdata, columndata, col_total) {
-	
+
 	var total_bars = columndata.length;
 	var bar_width = 40;
 	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
-	
+
 	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
 	max_bar_height = parseFloat(max_bar_height) + 50;
-	
+
 	var labelxval = parseInt(max_bar_height) + 5;
-	
+
 	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
 	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	
+
 	var xaxis_label = "";
 	var points = "";
 	var axis_text = "";
@@ -2391,35 +2391,35 @@ function draw_line_chart(rowdata, columndata, col_total) {
 	for(i = 0; i < rowdata.length; i++) {
 		xaxis_label += '<g><text y="'+xlabel_start+'" x="-'+labelxval+'" style="text-anchor: end;" transform="rotate(-90)">'+rowdata[i]+'</text></g>';
 		xlabel_start = parseInt(xlabel_start) + 40;
-		
+
 		var value = parseInt(max_bar_height) - parseFloat(columndata[i])
 		points += pointstart + " " + value + ",";
-		
+
 		axis_text += '<text x="'+pointstart+'" y="'+value+'">'+columndata[i]+'</text>';
-		
+
 		pointstart = parseInt(pointstart) + parseInt(40);
 	}
 	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
 	var polyline = '<polyline fill="none" stroke="#0099FF" stroke-width="2" points="'+points+'" />';
-		
+
 	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+xaxis_label+polyline+axis_text+'</svg>';
 	$(".graph_container_graphs").append(svg);
 }
 
 function draw_area_chart(rowdata, columndata, col_total) {
-	
+
 	var total_bars = columndata.length;
 	var bar_width = 40;
 	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
-	
+
 	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
 	max_bar_height = parseFloat(max_bar_height) + 50;
-	
+
 	var labelxval = parseInt(max_bar_height) + 5;
-	
+
 	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
 	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	
+
 	var xaxis_label = "";
 	var points = "";
 	var axis_text = "";
@@ -2428,17 +2428,17 @@ function draw_area_chart(rowdata, columndata, col_total) {
 	for(i = 0; i < rowdata.length; i++) {
 		xaxis_label += '<g><text y="'+xlabel_start+'" x="-'+labelxval+'" style="text-anchor: end;" transform="rotate(-90)">'+rowdata[i]+'</text></g>';
 		xlabel_start = parseInt(xlabel_start) + 40;
-		
+
 		var value = parseInt(max_bar_height) - parseFloat(columndata[i])
 		points += pointstart + " " + value + ",";
-		
+
 		axis_text += '<text x="'+pointstart+'" y="'+value+'">'+columndata[i]+'</text>';
-		
+
 		pointstart = parseInt(pointstart) + parseInt(40);
 	}
 	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
 	var polyline = '<polyline fill="#ccc" stroke="#0099FF" stroke-width="2" points="'+points+'" />';
-		
+
 	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+xaxis_label+polyline+axis_text+'</svg>';
 	$(".graph_container_graphs").append(svg);
 }
@@ -2703,6 +2703,3 @@ function downloadAsJson($this) {
 
 // END
 // EXPORT TABLE 2.0
-
-
-
