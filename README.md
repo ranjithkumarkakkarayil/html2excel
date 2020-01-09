@@ -4,7 +4,7 @@ This plugin coverts an HTML table to excel like element and add below features t
 
 1. Export HTML table as Excel, CSV, JSON and Copy table to clipboard.
 2. Freeze rows, cols and pane
-3. Single element pivot table
+3. Multiple level pivot table
 4. Single element basic charts
 5. Duplicate cell management
 6. Conditional formatting
