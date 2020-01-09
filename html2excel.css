@@ -354,7 +354,7 @@ input[type="number"]:focus {
    		min-height: 50vh;
 		width:100%;
    	}
-   	
+
    	.tc_responsive_table, .tc_responsive_table thead, .tc_responsive_table tbody, .tc_responsive_table th, .tc_responsive_table td, .tc_responsive_table tr {
    	    display: block;
    	}
@@ -698,7 +698,7 @@ input[type="number"]:focus {
 }
 
 
-.pie 
+.pie
 {
   position: absolute;
   left: 50%;
@@ -710,7 +710,7 @@ input[type="number"]:focus {
   transform-origin: left center;
   overflow: hidden;
 }
-.pie:before 
+.pie:before
 {
   position: absolute;
   left: -100%;
@@ -842,10 +842,10 @@ input[type="number"]:focus {
 	-moz-transition: all 400ms ease-in-out;
 	transition: all 400ms ease-in-out;
 	z-index: 1;
-	  
+
 	clip-path: polygon(0% 70%, 10% 50%, 20% 60%, 30% 23%, 40% 50%, 50% 67%, 60% 57%, 70% 68%, 80% 70%, 90% 55%, 100% 10%, 100% 100%, 0% 100%);
 	 -webkit-clip-path: polygon(0% 70%, 10% 50%, 20% 60%, 30% 23%, 40% 50%, 50% 67%, 60% 57%, 70% 68%, 80% 70%, 90% 55%, 100% 10%, 100% 100%, 0% 100%);
-	
+
 	-webkit-animation: do 1.2s ease-in-out forwards;
 	-moz-animation: do 1.2s ease-in-out forwards;
 	animation: do 1.2s ease-in-out forwards;
@@ -998,6 +998,53 @@ input[type="number"]:focus {
 #pivot_table tr th:last-child {
 	border-left:2px double #E9EBEC;
 }
+
+/* Multi pivot updates */
+
+
+#tbl_multi_pivot_table thead tr th {
+	background-color:#ECF0F1;
+	border:1px solid white;
+	padding:3px 10px;
+}
+
+#tbl_multi_pivot_table tbody tr td {
+	border:1px solid #ECF0F1;
+	padding:3px 10px;
+	background-color:white;
+}
+
+#tbl_multi_pivot_table tbody tr td.td_pivot_borderless {
+	border:none;
+	border-left:1px solid #ECF0F1;
+	border-right:1px solid #ECF0F1;
+}
+
+#tbl_multi_pivot_table tbody tr td.td_pivot_border {
+	border-bottom:none;
+}
+
+#tbl_multi_pivot_table thead tr th.th_pivot_noborder {
+	border-left:none;
+	border-right:none;
+}
+
+#tbl_multi_pivot_table thead tr th.th_pivot_border {
+	border-right:none;
+}
+
+.pivot_table_container {
+	overflow-x: :scroll;
+	overflow-y: scroll;
+}
+
+#tbl_multi_pivot_table {
+	width:100% !important;
+	border:1px solid #E4E5E5;
+}
+
+
+
 /* END - PIVOT TABLE 2.0 */
 
 
@@ -1147,7 +1194,7 @@ g text.data {
 @keyframes rotate {
   to {
     x
-  } 
+  }
 }
 
 .tbl_pie_legends {
@@ -1161,20 +1208,3 @@ g text.data {
 	font-size:10px;
 }
 /* END - GRAPHS 2.0 */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

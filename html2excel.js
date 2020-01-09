@@ -1,12 +1,11 @@
-
 var tcdoptionsrowid,
-tcdoptionscolid,
-startcol,
-startrow,
-endcol,
-endrow,
-startsel,
-rowcount;
+    tcdoptionscolid,
+    startcol,
+    startrow,
+    endcol,
+    endrow,
+    startsel,
+    rowcount;
 
 (function($) {
     $.fn.html2excel = function(options) {
@@ -24,14 +23,14 @@ rowcount;
         table.addClass("html2excel");
 
         addHeadings(table, totalrows, totalcols);
-		table_pagination(table);
+        table_pagination(table);
         loadTableOptions(table);
-		table_sort(table);
-		table_responsive(table);
-		table_inline_editing(table);
-		right_click(table);
-		create_pivot(table);
-		create_charts(table);
+        table_sort(table);
+        table_responsive(table);
+        table_inline_editing(table);
+        right_click(table);
+        create_pivot(table);
+        create_charts(table);
     };
 }(jQuery));
 
@@ -46,20 +45,20 @@ function loadTableOptions(table) {
 
     // Export table
     var export_table = '<a id="tcd_export_excel" data-toggle="tooltip" title="Export to excel"><i class="fas fa-file-excel"></i><br/>Save as Excel</a>' +
-		'<a id="tcd_export_csv" data-toggle="tooltip" title="Export to csv"><i class="fas fa-file-csv"></i><br/>Save as CSV</a>' +
+        '<a id="tcd_export_csv" data-toggle="tooltip" title="Export to csv"><i class="fas fa-file-csv"></i><br/>Save as CSV</a>' +
         '<a id="tcd_export_json" data-toggle="tooltip" title="Export to json"><i class="fas fa-file-code"></i><br/>Save as JSON</a>' +
         '<a id="tcd_export_copy" data-toggle="tooltip" title="Copy to clipboard"><i class="fas fa-copy"></i><br/>Copy table</a>';
 
     // Actions
     var actions = '<a id="tcd_table"><i class="fas fa-table"></i><br/>Toggle table</a>' +
-        '<a id="tcd_options_paging"><i class="fas fa-ellipsis-h"></i><br/>Toggle paging</a>'+
-		'<a id="tcd_options_freeze_pa"><i class="fas fa-border-style"></i><br/>Freeze pane</a>'+
-		'<a id="tcd_options_freeze_tr"><i class="fas fa-arrows-alt-h"></i><br/>Freeze header</a>'+
-		'<a id="tcd_options_freeze_tc"><i class="fas fa-arrows-alt-v"></i><br/>Freeze 1st col</a>';
+        '<a id="tcd_options_paging"><i class="fas fa-ellipsis-h"></i><br/>Toggle paging</a>' +
+        '<a id="tcd_options_freeze_pa"><i class="fas fa-border-style"></i><br/>Freeze pane</a>' +
+        '<a id="tcd_options_freeze_tr"><i class="fas fa-arrows-alt-h"></i><br/>Freeze header</a>' +
+        '<a id="tcd_options_freeze_tc"><i class="fas fa-arrows-alt-v"></i><br/>Freeze 1st col</a>';
 
     // Data
     var dataandformat = '<a id="tcd_options_pivot"><i class="fas fa-filter"></i><br/>Pivot table</a>' +
-		'<a id="tcd_option_graphs"><i class="fas fa-chart-bar"></i><br/>Graphs</a>' +
+        '<a id="tcd_option_graphs"><i class="fas fa-chart-bar"></i><br/>Graphs</a>' +
         '<a id="tcd_option_duplicate"><i class="fas fa-check-double"></i><br/>Duplicates</a>' +
         '<a id="tcd_options_conditional_format"><i class="fas fa-palette"></i><br/>Conditional formatting</a>' +
         '<a id="tcd_option_format"><i class="fas fa-align-center"></i><br/>Format cells</a>';
@@ -393,33 +392,33 @@ function loadTableOptions(table) {
         '</div>' +
         '</div>'
 
-	$("body").append(rightclick_menu);
+    $("body").append(rightclick_menu);
     $("body").append(conditional_format);
     $("body").append(duplicates);
     $("body").append(format_cells);
 
     table.before(table_options);
 
-	var pivot_chart_containers = '<div id="html2excel_pivot_container"></div><div id="html2excel_chart_container"></div>';
-	$(".tc_pager").after(pivot_chart_containers);
+    var pivot_chart_containers = '<div id="html2excel_pivot_container"></div><div id="html2excel_chart_container"></div>';
+    $(".tc_pager").after(pivot_chart_containers);
 
-	var pivot_container = '<div id="tcd_pivot" class="hide"></div>';
-	$("#html2excel_pivot_container").append(pivot_container);
+    var pivot_container = '<div id="tcd_pivot" class="hide"></div>';
+    $("#html2excel_pivot_container").append(pivot_container);
 
-	var graph_container = '<div id="div_graph_container" class="hide"></div>';
-	$("#html2excel_chart_container").append(graph_container);
+    var graph_container = '<div id="div_graph_container" class="hide"></div>';
+    $("#html2excel_chart_container").append(graph_container);
 
     init_table_options(table);
 }
 
 function init_table_options(table) {
-	var $this = table;
-	var table_name = $this.attr("id");
+    var $this = table;
+    var table_name = $this.attr("id");
 
     $(".html2excel_action_menu table tr td a").click(function(e) {
         var id = $(this).attr("id");
-		$(".html2excel_action_menu table tr td a").removeClass("show_menu");
-		$(this).addClass("show_menu");
+        $(".html2excel_action_menu table tr td a").removeClass("show_menu");
+        $(this).addClass("show_menu");
         $(".html2excel_action_details div").removeClass("show");
         $(".html2excel_action_details div").addClass("hide")
         $("." + id).addClass("show");
@@ -437,13 +436,13 @@ function init_table_options(table) {
         $("#modal_format").modal("show");
     });
 
-	document.getElementById('tcd_conditional_format_step2').addEventListener('change', loadConditionalFormating, false);
+    document.getElementById('tcd_conditional_format_step2').addEventListener('change', loadConditionalFormating, false);
     document.getElementById('tcd_conditional_format_step3a').addEventListener('change', loadConditionalFormatingBetween, false);
     document.getElementById('tcd_dup_action').addEventListener('change', dupHighlightChange, false);
 
     $("#tcd_table").click(function(e) {
         table.toggle();
-		$(".tc_pager").toggle();
+        $(".tc_pager").toggle();
     });
 
     $("#tcd_options_paging").click(function(e) {
@@ -462,7 +461,7 @@ function init_table_options(table) {
         $("#tcd_pivot").toggle();
     });
 
-	$("#tcd_option_graphs").click(function(e) {
+    $("#tcd_option_graphs").click(function(e) {
         $("#div_graph_container").toggle();
     });
 
@@ -486,71 +485,71 @@ function init_table_options(table) {
         manage_context_options($(this).attr("data-tcd-context-option"), table);
     });
 
-	$("#tcd_option_format").click(function(e) {
+    $("#tcd_option_format").click(function(e) {
         $("#modal_format").modal("show");
     });
 
-	$(".tcd_format_options").click(function(e) {
+    $(".tcd_format_options").click(function(e) {
         format_options($(this).attr("data-tcd-format-option"), table);
     });
 
-	$("#tcd_format_font_size").change(function(e) {
-		format_options("fontselect", table);
-	});
+    $("#tcd_format_font_size").change(function(e) {
+        format_options("fontselect", table);
+    });
 
-	$("#tcd_format_font_style").change(function(e) {
-		format_options("fontstyle", table);
-	});
+    $("#tcd_format_font_style").change(function(e) {
+        format_options("fontstyle", table);
+    });
 
-	$("input[name='format-font-color']").change(function(e) {
-		format_options("fontcolor", table);
-	});
+    $("input[name='format-font-color']").change(function(e) {
+        format_options("fontcolor", table);
+    });
 
-	$("input[name='format-cell-color']").change(function(e) {
-		format_options("cellcolor", table);
-	});
+    $("input[name='format-cell-color']").change(function(e) {
+        format_options("cellcolor", table);
+    });
 
-	$("#chart_label").on("change", function(){
-	    $("#chart_label").text($(this).val());
-	});
+    $("#chart_label").on("change", function() {
+        $("#chart_label").text($(this).val());
+    });
 
-	$("#tcd_options_freeze_pa").click(function(e) {
+    $("#tcd_options_freeze_pa").click(function(e) {
 
     });
 
-	$("#tcd_export_excel").click(function(e) {
-		var filename = table_name + ".xls";
+    $("#tcd_export_excel").click(function(e) {
+        var filename = table_name + ".xls";
         tableToExcel(table_name, 'Sheet 1', filename);
-	});
-
-	$("#tcd_export_csv").click(function(e) {
-
-	});
-
-	$("#tcd_export_json").click(function(e) {
-		downloadAsJson($this);
-	});
-
-	$("#tcd_export_copy").click(function(e) {
-		selectElementContents(document.getElementById(table_name));
-	});
-
-	$("#tcd_options_freeze_tr").click(function(e) {
-		if($this.hasClass("tc_fixed_header"))
-			$this.removeClass("tc_fixed_header");
-		else
-			$this.addClass("tc_fixed_header");
     });
 
-	$("#tcd_options_freeze_tc").click(function(e) {
-		if($this.hasClass("tc_fixed_first_col"))
-			$this.removeClass("tc_fixed_first_col");
-		else
-			$this.addClass("tc_fixed_first_col");
+    $("#tcd_export_csv").click(function(e) {
+
+    });
+
+    $("#tcd_export_json").click(function(e) {
+        downloadAsJson($this);
+    });
+
+    $("#tcd_export_copy").click(function(e) {
+        selectElementContents(document.getElementById(table_name));
+    });
+
+    $("#tcd_options_freeze_tr").click(function(e) {
+        if ($this.hasClass("tc_fixed_header"))
+            $this.removeClass("tc_fixed_header");
+        else
+            $this.addClass("tc_fixed_header");
+    });
+
+    $("#tcd_options_freeze_tc").click(function(e) {
+        if ($this.hasClass("tc_fixed_first_col"))
+            $this.removeClass("tc_fixed_first_col");
+        else
+            $this.addClass("tc_fixed_first_col");
     });
 
 
-	// Start : Select column
+    // Start : Select column
     table.find("thead tr th").click(function(e) {
         var colid = $(this).parent().children().index($(this));
         selected_column = parseInt(colid + 1);
@@ -564,30 +563,33 @@ function init_table_options(table) {
     // End : Select column
 
     // Start : Table cell selection on drag
-	table.find("tbody tr td").mousedown(function(e) {
-	  if (e.which == 1) { clearselection(table); }
-	  $(this).addClass("selected");
-	  startcol = $(this).index();
-	  startrow = $(this).parent().index() + 1;
-	  startsel = true;
-	  return false;
-	})
-	.mouseup(function(e){
-	  $(this).addClass("selected");
-	  endcol = $(this).closest("td").index();
-	  endrow = $(this).closest("td").parent().index() + 1;
-	  startsel = false;
-	  highightselected(table);
-	})
-	.mousemove(function(e){
-	  if(startsel == true) {
-	    $(this).addClass("selected");
-	  }
-	});
+    table.find("tbody tr td").mousedown(function(e) {
+            if (e.which == 1) {
+                clearselection(table);
+            }
+            $(this).addClass("selected");
+            startcol = $(this).index();
+            startrow = $(this).parent().index() + 1;
+            startsel = true;
+            return false;
+        })
+        .mouseup(function(e) {
+            $(this).addClass("selected");
+            endcol = $(this).closest("td").index();
+            endrow = $(this).closest("td").parent().index() + 1;
+            startsel = false;
+            highightselected(table);
+        })
+        .mousemove(function(e) {
+            if (startsel == true) {
+                $(this).addClass("selected");
+            }
+        });
     // End : Table cell selection on drag
 }
 
 var isPaginated = true;
+
 function table_pagination($this) {
     $this.each(function() {
         var currentPage = 0;
@@ -1029,24 +1031,28 @@ function reapply_all_rules(table) {
 }
 
 function clearselection(table) {
-  table.find("tr td.selected").removeClass("selected");
+    table.find("tr td.selected").removeClass("selected");
 }
 
 function highightselected(table) {
-	var tempcol = "";
-	  if(endcol < startcol) {
-	    tempcol = endcol; endcol = startcol; startcol = tempcol;
-	  }
-	  if(endrow < startrow) {
-	    tempcol = endrow; endrow = startrow; startrow = tempcol;
-	  }
+    var tempcol = "";
+    if (endcol < startcol) {
+        tempcol = endcol;
+        endcol = startcol;
+        startcol = tempcol;
+    }
+    if (endrow < startrow) {
+        tempcol = endrow;
+        endrow = startrow;
+        startrow = tempcol;
+    }
 
-	  for (var i = startrow; i <= endrow; i++) {
-	      var rowCells = table.find("tr").eq(i).find("td");
-	      for (var j = startcol; j <= endcol; j++) {
-	          rowCells.eq(j).addClass("selected");
-	      }
-	  }
+    for (var i = startrow; i <= endrow; i++) {
+        var rowCells = table.find("tr").eq(i).find("td");
+        for (var j = startcol; j <= endcol; j++) {
+            rowCells.eq(j).addClass("selected");
+        }
+    }
 }
 
 function dupHighlightChange() {
@@ -1171,23 +1177,23 @@ function manage_context_options(option, table) {
     let target = $this.find("tbody tr:nth-child(" + tcdoptionsrowid + ") td:nth-child(" + tcdoptionscolid + ")").focus()[0];
 
     switch (option) {
-		case "mergerows":
-			merge_rows($this);
-			break;
-		case "mergecells":
-			merge_rows($this);
+        case "mergerows":
+            merge_rows($this);
+            break;
+        case "mergecells":
+            merge_rows($this);
 
-			var trows = endrow - startrow + 1;
-			var selectedrows = table.find("tr td.selected:last").attr("rowspan");
-			if(selectedrows > 1) {
-			  trows = parseInt(trows) + parseInt(selectedrows) - 1;
-			}
+            var trows = endrow - startrow + 1;
+            var selectedrows = table.find("tr td.selected:last").attr("rowspan");
+            if (selectedrows > 1) {
+                trows = parseInt(trows) + parseInt(selectedrows) - 1;
+            }
 
-			table.find("tr td.selected:first").attr("rowspan",trows);
-			table.find("tr td.selected:first").removeClass("selected");
-			table.find("tr td.selected").remove();
+            table.find("tr td.selected:first").attr("rowspan", trows);
+            table.find("tr td.selected:first").removeClass("selected");
+            table.find("tr td.selected").remove();
 
-			break;
+            break;
         case "cut":
             copy_to_clipboard(target);
             $this.find("tbody tr:nth-child(" + tcdoptionsrowid + ") td:nth-child(" + tcdoptionscolid + ")").text("");
@@ -1200,32 +1206,32 @@ function manage_context_options(option, table) {
             break;
         case "insertcolright":
             var newColumn = [],
-			      colsCount = table.find('tr > td:last').index();
-			table.find("tr").each( function(rowIndex) {
-			  	var cell = $("<t"+(rowIndex == 0 ?  "h" : "d")+"/>").text((rowIndex == 0 ?  "New col" : ""));
-			  	newColumn.push(
-			  	  tcdoptionscolid > colsCount
-			  	        ? cell.appendTo(this)
-			  	        : cell.insertBefore( $(this).children().eq(tcdoptionscolid) )
-			  	);
-			});
+                colsCount = table.find('tr > td:last').index();
+            table.find("tr").each(function(rowIndex) {
+                var cell = $("<t" + (rowIndex == 0 ? "h" : "d") + "/>").text((rowIndex == 0 ? "New col" : ""));
+                newColumn.push(
+                    tcdoptionscolid > colsCount ?
+                    cell.appendTo(this) :
+                    cell.insertBefore($(this).children().eq(tcdoptionscolid))
+                );
+            });
 
-			right_click($this);
+            right_click($this);
             table_inline_editing($this);
             break;
         case "insertcolleft":
-			var newColumn = [],
-			      colsCount = table.find('tr > td:last').index();
-			table.find("tr").each( function(rowIndex) {
-			  	var cell = $("<t"+(rowIndex == 0 ?  "h" : "d")+"/>").text((rowIndex == 0 ?  "New col" : ""));
-			  	newColumn.push(
-			  	  (tcdoptionscolid - 1) > colsCount
-			  	        ? cell.appendTo(this)
-			  	        : cell.insertBefore( $(this).children().eq((tcdoptionscolid - 1)) )
-			  	);
-			});
+            var newColumn = [],
+                colsCount = table.find('tr > td:last').index();
+            table.find("tr").each(function(rowIndex) {
+                var cell = $("<t" + (rowIndex == 0 ? "h" : "d") + "/>").text((rowIndex == 0 ? "New col" : ""));
+                newColumn.push(
+                    (tcdoptionscolid - 1) > colsCount ?
+                    cell.appendTo(this) :
+                    cell.insertBefore($(this).children().eq((tcdoptionscolid - 1)))
+                );
+            });
 
-			right_click($this);
+            right_click($this);
             table_inline_editing($this);
             break;
         case "insertrowtop":
@@ -1271,43 +1277,43 @@ function manage_context_options(option, table) {
         case "clearcontent":
             $this.find("tbody tr:nth-child(" + tcdoptionsrowid + ") td:nth-child(" + tcdoptionscolid + ")").text("");
             break;
-		case "formatcells":
-			$("#modal_format").modal("show");
-			break;
+        case "formatcells":
+            $("#modal_format").modal("show");
+            break;
     }
 }
 
 function merge_rows($this) {
-	$this.find("tr").each(function(e) {
-	        var colspanval = 0;
-	        var celllength = $(this).find('td.selected').length;
-	        var selectedcells = table.find("tr td.selected:last").attr("colspan");
-	        if(selectedcells > 1) {
-	          celllength = parseInt(celllength) + parseInt(selectedcells) - 1;
-	        }
-	        $(this).find("td.selected").each(function(cellindex) {
-	            if (cellindex == 0) {
-	                if ($(this).attr('colspan') > 1) {
-	                    colspanval = $(this).attr('colspan');
-	                    celllength = parseInt(celllength) + parseInt(colspanval) - 1;
-	                }
-	                $(this).attr("colspan", celllength);
-	            } else {
-	                $(this).remove();
-	            }
-	        });
-	    });
+    $this.find("tr").each(function(e) {
+        var colspanval = 0;
+        var celllength = $(this).find('td.selected').length;
+        var selectedcells = table.find("tr td.selected:last").attr("colspan");
+        if (selectedcells > 1) {
+            celllength = parseInt(celllength) + parseInt(selectedcells) - 1;
+        }
+        $(this).find("td.selected").each(function(cellindex) {
+            if (cellindex == 0) {
+                if ($(this).attr('colspan') > 1) {
+                    colspanval = $(this).attr('colspan');
+                    celllength = parseInt(celllength) + parseInt(colspanval) - 1;
+                }
+                $(this).attr("colspan", celllength);
+            } else {
+                $(this).remove();
+            }
+        });
+    });
 }
 
 function copy_to_clipboard(target) {
-	target = $("#tcd_container").find("table tr td.selected")[0];
+    target = $("#tcd_container").find("table tr td.selected")[0];
 
-	// var srow = target.find("tr td.selected:first").parent().index();
-	// var lrow = target.find("tr td.selected:last").parent().index();
-	// var scol = target.find("tr td.selected:first").index();
-	// var lcol = target.find("tr td.selected:last").index();
-	// var nrows = lrow - srow;
-	// var ncols = lcol - scol;
+    // var srow = target.find("tr td.selected:first").parent().index();
+    // var lrow = target.find("tr td.selected:last").parent().index();
+    // var scol = target.find("tr td.selected:first").index();
+    // var lcol = target.find("tr td.selected:last").index();
+    // var nrows = lrow - srow;
+    // var ncols = lcol - scol;
 
     let range = document.createRange();
     range.selectNodeContents(target);
@@ -1325,693 +1331,619 @@ function get_from_clipboard() {
 }
 
 function table_resize($this) {
-	var thHeight = $this.find("th:first").height();
-	  $this.find("th").resizable({
-	      handles: "e",
-	      minHeight: thHeight,
-	      maxHeight: thHeight,
-	      minWidth: 40,
-	      resize: function (event, ui) {
-	        var sizerID = "#" + $(event.target).attr("id") + "-sizer";
-	        $(sizerID).width(ui.size.width);
-	      }
-	  });
+    var thHeight = $this.find("th:first").height();
+    $this.find("th").resizable({
+        handles: "e",
+        minHeight: thHeight,
+        maxHeight: thHeight,
+        minWidth: 40,
+        resize: function(event, ui) {
+            var sizerID = "#" + $(event.target).attr("id") + "-sizer";
+            $(sizerID).width(ui.size.width);
+        }
+    });
 }
 
 function format_options(option, table) {
-	var $this = table;
-	switch(option){
-		case "up":
-			$this.find("td.selected").each(function(){
-				var size = $(this).css('font-size');
-				size = parseInt(size.substring(0, size.length - 2)) + 1;
-				$(this).css('font-size', size + "px");
-			});
-		break;
-		case "down":
-			$this.find("td.selected").each(function(){
-				var size = $(this).css('font-size');
-				size = parseInt(size.substring(0, size.length - 2)) - 1;
-				$(this).css('font-size', size + "px");
-			});
-		break;
-		case "bold":
-			$this.find("td.selected").each(function(){
-				if($(this).hasClass("bold"))
-					$(this).removeClass("bold");
-				else
-					$(this).addClass("bold");
-			});
-		break;
-		case "italic":
-			$this.find("td.selected").each(function(){
-				if($(this).hasClass("italic"))
-					$(this).removeClass("italic");
-				else
-					$(this).addClass("italic");
-			});
-		break;
-		case "underline":
-			$this.find("td.selected").each(function(){
-				if($(this).hasClass("underline"))
-					$(this).removeClass("underline");
-				else
-					$(this).addClass("underline");
-			});
-		break;
-		case "left":
-			$this.find("td.selected").each(function(){
-				$(this).removeClass("left");
-				$(this).removeClass("right");
-				$(this).removeClass("center");
+    var $this = table;
+    switch (option) {
+        case "up":
+            $this.find("td.selected").each(function() {
+                var size = $(this).css('font-size');
+                size = parseInt(size.substring(0, size.length - 2)) + 1;
+                $(this).css('font-size', size + "px");
+            });
+            break;
+        case "down":
+            $this.find("td.selected").each(function() {
+                var size = $(this).css('font-size');
+                size = parseInt(size.substring(0, size.length - 2)) - 1;
+                $(this).css('font-size', size + "px");
+            });
+            break;
+        case "bold":
+            $this.find("td.selected").each(function() {
+                if ($(this).hasClass("bold"))
+                    $(this).removeClass("bold");
+                else
+                    $(this).addClass("bold");
+            });
+            break;
+        case "italic":
+            $this.find("td.selected").each(function() {
+                if ($(this).hasClass("italic"))
+                    $(this).removeClass("italic");
+                else
+                    $(this).addClass("italic");
+            });
+            break;
+        case "underline":
+            $this.find("td.selected").each(function() {
+                if ($(this).hasClass("underline"))
+                    $(this).removeClass("underline");
+                else
+                    $(this).addClass("underline");
+            });
+            break;
+        case "left":
+            $this.find("td.selected").each(function() {
+                $(this).removeClass("left");
+                $(this).removeClass("right");
+                $(this).removeClass("center");
 
-				if($(this).hasClass("left"))
-					$(this).removeClass("left");
-				else
-					$(this).addClass("left");
-			});
-		break;
-		case "center":
-			$this.find("td.selected").each(function(){
-				$(this).removeClass("left");
-				$(this).removeClass("right");
-				$(this).removeClass("center");
+                if ($(this).hasClass("left"))
+                    $(this).removeClass("left");
+                else
+                    $(this).addClass("left");
+            });
+            break;
+        case "center":
+            $this.find("td.selected").each(function() {
+                $(this).removeClass("left");
+                $(this).removeClass("right");
+                $(this).removeClass("center");
 
-				if($(this).hasClass("center"))
-					$(this).removeClass("center");
-				else
-					$(this).addClass("center");
-			});
-		break;
-		case "right":
-			$this.find("td.selected").each(function(){
-				$(this).removeClass("left");
-				$(this).removeClass("right");
-				$(this).removeClass("center");
+                if ($(this).hasClass("center"))
+                    $(this).removeClass("center");
+                else
+                    $(this).addClass("center");
+            });
+            break;
+        case "right":
+            $this.find("td.selected").each(function() {
+                $(this).removeClass("left");
+                $(this).removeClass("right");
+                $(this).removeClass("center");
 
-				if($(this).hasClass("right"))
-					$(this).removeClass("right");
-				else
-					$(this).addClass("right");
-			});
-		break;
-		case "fontselect":
-			var fontsize = $("#tcd_format_font_size").val();
-			$this.find("td.selected").each(function(){
-				$(this).css('font-size', fontsize + "px");
-			});
-		break;
-		case "fontstyle":
-			var fontstyle = $("#tcd_format_font_style").val();
-			$this.find("td.selected").each(function(){
-				$(this).css('font-family', fontstyle);
-			});
-		break;
-		case "fontcolor":
-			var fontcolor = $("input[name='format-font-color']:checked").val();
-			$this.find("td.selected").each(function(){
-				$(this).css('color', fontcolor);
-			});
-		break;
-		case "cellcolor":
-			var cellcolor = $("input[name='format-cell-color']:checked").val();
-			$this.find("td.selected").each(function(){
-				$(this).css('background-color', cellcolor);
-			});
-		break;
-		case "rotate":
-			var degree = $("#tcd_format_font_rotate").val();
-			$this.find("td.selected").each(function(){
-				$(this).css('height', $(this).width());
-				$(this).css('-moz-transform', 'rotate('+degree+'deg)');
-				$(this).css('-webkit-transform', 'rotate('+degree+'deg)');
-				$(this).css('-o-transform', 'rotate('+degree+'deg)');
-				$(this).css('transform', 'rotate('+degree+'deg)');
-			});
-		break;
-	}
+                if ($(this).hasClass("right"))
+                    $(this).removeClass("right");
+                else
+                    $(this).addClass("right");
+            });
+            break;
+        case "fontselect":
+            var fontsize = $("#tcd_format_font_size").val();
+            $this.find("td.selected").each(function() {
+                $(this).css('font-size', fontsize + "px");
+            });
+            break;
+        case "fontstyle":
+            var fontstyle = $("#tcd_format_font_style").val();
+            $this.find("td.selected").each(function() {
+                $(this).css('font-family', fontstyle);
+            });
+            break;
+        case "fontcolor":
+            var fontcolor = $("input[name='format-font-color']:checked").val();
+            $this.find("td.selected").each(function() {
+                $(this).css('color', fontcolor);
+            });
+            break;
+        case "cellcolor":
+            var cellcolor = $("input[name='format-cell-color']:checked").val();
+            $this.find("td.selected").each(function() {
+                $(this).css('background-color', cellcolor);
+            });
+            break;
+        case "rotate":
+            var degree = $("#tcd_format_font_rotate").val();
+            $this.find("td.selected").each(function() {
+                $(this).css('height', $(this).width());
+                $(this).css('-moz-transform', 'rotate(' + degree + 'deg)');
+                $(this).css('-webkit-transform', 'rotate(' + degree + 'deg)');
+                $(this).css('-o-transform', 'rotate(' + degree + 'deg)');
+                $(this).css('transform', 'rotate(' + degree + 'deg)');
+            });
+            break;
+    }
 }
 
 // PIVOT TABLE 2.0
 // START
 
 function create_pivot(table) {
-	setup_pivot_area();
+    setup_pivot_area();
 
-  	var trows = table.find("tbody tr").length;
-  	var tcols = table.find("thead tr th").length;
+    var trows = table.find("tbody tr").length;
+    var tcols = table.find("thead tr th").length;
 
-  	var headerslist = [];
-  	for(i=1;i<=tcols;i++) {
-  	  var header_value = table.find("thead tr th:nth-child("+i+")").text();
-  	  headerslist.push(header_value);
-  	  $(".dimension_field_name").append("<a id='"+i+"'>"+header_value+"</a>");
-  	}
+    var headerslist = [];
+    for (i = 1; i <= tcols; i++) {
+        var header_value = table.find("thead tr th:nth-child(" + i + ")").text();
+        headerslist.push(header_value);
+        $(".dimension_field_name").append("<a id='" + i + "'>" + header_value + "</a>");
+    }
 
-	enable_drag_drop_pivot(table);
-  	enable_filter_selection(table);
+    enable_drag_drop_pivot(table);
+    enable_filter_selection(table);
 }
 
-function setup_pivot_area() {
-	var pivot_container = '<div id="div_pivot_container"></div>';
-	$("#tcd_pivot").append(pivot_container);
 
-  	var container = '<div class="row"><div class="col-md-3 pivot_dimensions"></div><div class="col-md-9 pivot_values"></div></div>';
-  	$("#div_pivot_container").append(container);
-  	var dimensions = '<div class="row"><div class="col-md-12"><p>Single level pivot table builder</p><p>Field name</p><div class="dimension_field_name"></div></div></div><div class="row"><div class="col-md-6"><p>Filters</p><div class="dimension_filters dimension_droppable"></div></div><div class="col-md-6"><p>Columns</p><div class="dimension_columns dimension_droppable"></div></div></div><div class="row"><div class="col-md-6"><p>Rows</p><div class="dimension_rows dimension_droppable"></div></div><div class="col-md-6"><p>Values</p><div class="dimension_values dimension_droppable"></div></div></div>';
-  	$(".pivot_dimensions").append(dimensions);
-  	var actions = '<select id="pivot_value_action" style="display:none"><option value="count">Count of value</option><option value="sum">Sum of value</option><option value="average">Average of value</option><option value="max">Max of value</option><option value="min">Min of value</option></select>';
-  	var pivottable_actions = '<div class="row"><div class="col-md-2">'+actions+'</div></div>';
-  	$(".pivot_values").append(pivottable_actions);
-  	var pivot_table_container = '<div class="pivot_table_container"></div>';
-  	$(".pivot_values").append(pivot_table_container);
+function setup_pivot_area() {
+    var pivot_container = '<div id="div_pivot_container"></div>';
+    $("#tcd_pivot").append(pivot_container);
+
+    var container = '<div class="row"><div class="col-md-3 pivot_dimensions"></div><div class="col-md-9 pivot_values"></div></div>';
+    $("#div_pivot_container").append(container);
+    var dimensions = '<div class="row"><div class="col-md-12"><p>Pivot table builder</p><p>Field name</p><div class="dimension_field_name"></div></div></div><div class="row"><div class="col-md-6"><p>Filters</p><div class="dimension_filters dimension_droppable"></div></div><div class="col-md-6"><p>Columns</p><div class="dimension_columns dimension_droppable"></div></div></div><div class="row"><div class="col-md-6"><p>Rows</p><div class="dimension_rows dimension_droppable"></div></div><div class="col-md-6"><p>Values</p><div class="dimension_values dimension_droppable"></div></div></div>';
+    $(".pivot_dimensions").append(dimensions);
+
+    var actions = '<p><select id="pivot_value_action" style="display:none"><option value="count">Count of value</option><option value="sum">Sum of value</option><option value="avg">Average of value</option><option value="max">Max of value</option><option value="min">Min of value</option></select></p>';
+    var pivottable_actions = '<div class="row"><div class="col-md-2">' + actions + '</div></div>';
+    $(".pivot_values").append(pivottable_actions);
+
+    var pivot_table_container = '<div class="pivot_table_container"></div>';
+    $(".pivot_values").append(pivot_table_container);
 }
 
 function enable_drag_drop_pivot(table) {
-	$('.dimension_field_name a').draggable({
-	    cancel: "a.ui-icon",
+    $('.dimension_field_name a').draggable({
+        cancel: "a.ui-icon",
         revert: "invalid",
         containment: "document",
         helper: "clone",
         cursor: "move",
-		stack: ".dimension_field_name a"
-	});
+        stack: ".dimension_field_name a"
+    });
 
-	$(".dimension_field_name").droppable({
+    $(".dimension_field_name").droppable({
         accept: ".dimension_droppable > a",
         drop: function(event, ui) {
             $(this).append(ui.draggable);
-			load_pivot_template(table);
+            load_pivot_multi_level(table);
         }
     });
 
-	$(".dimension_droppable").droppable({
+    $(".dimension_droppable").droppable({
         accept: ".dimension_field_name > a",
         drop: function(event, ui) {
             $(this).append(ui.draggable.clone());
-			load_pivot_template(table);
+            load_pivot_multi_level(table);
 
             $(this).find("a").dblclick(function() {
                 var elid = ui.draggable.attr("id");
                 var container = $(this).parent().attr('class').split(' ')[0]
                 $("." + container).find("#" + elid).remove();
-                load_pivot_template(table);
+                load_pivot_multi_level(table);
             });
-
         }
     });
 }
 
-function load_pivot_template(table) {
-	// clear elements before recreating them
-	$("#pivot_table").remove();
-	$("#rowlabelfilter").empty();
-	//$("#filter_container").remove();
-
-	// pivot math operation
-	var pivot_value_action = $("#pivot_value_action").val();
-
-	// dimension elements
-	var filter_el = 0,
-		col_el = 0,
-		row_el = 0,
-		value_el = 0;
-
-	// all data's
-	var filterdata_all = [],
-		columndata_all = [],
-		rowdata_all = [],
-		valuedata_all = [],
-		uniqueNames_all = [],
-		rowlabelfilter_all = [];
-
-	// unique data's
-	var filterdata = [],
-		columndata = [],
-		rowdata = [],
-		valuedata = [],
-		uniqueNames = [],
-		rowlabelfilter = [];
-
-	// total row and column size for pivot table
-	var pivot_col_length = 0,
-		pivot_row_length = 0,
-		table_row_length = 0;
-
-	table_row_length = table.find("tbody tr").length;
-
-	// get first dimension element
-	filter_el = $(".dimension_filters").find("a:first").attr("id");
-	col_el = $(".dimension_columns").find("a:first").attr("id");
-	row_el = $(".dimension_rows").find("a:first").attr("id");
-	value_el = $(".dimension_values").find("a:first").attr("id");
-
-	// push dimension element data to respective arrays
-	if(filter_el > 0) {
-		table.find("tbody td:nth-child("+filter_el+")").each(function() {
-		    if ($.inArray($(this).text(), filterdata) == -1) {
-		        filterdata.push($(this).text()); // array to store unique data
-				filterdata_all.push($(this).text()); // array to store all data
-			}
-		});
-
-		// filtering out unique. will be used in populating table
-		uniqueNames = [];
-		$.each(filterdata, function(i, el) {
-	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-	    });
-	    filterdata = uniqueNames;
-
-		// sorting the array
-		filterdata.sort();
-	}
-
-	if(col_el > 0) {
-		table.find("tbody td:nth-child("+col_el+")").each(function() {
-		    if ($.inArray($(this).text(), columndata) == -1) {
-		        columndata.push($(this).text());
-				columndata_all.push($(this).text());
-			}
-		});
-
-		uniqueNames = [];
-		$.each(columndata, function(i, el) {
-	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-	    });
-
-	    columndata = uniqueNames;
-
-		columndata.sort();
-
-		pivot_col_length = parseInt(columndata.length) + 2;
-	}
-
-	if(row_el > 0) {
-		table.find("tbody td:nth-child("+row_el+")").each(function() {
-		    if ($.inArray($(this).text(), rowdata) == -1) {
-		        rowdata.push($(this).text());
-				rowdata_all.push($(this).text());
-			}
-		});
-
-		uniqueNames = [];
-		$.each(rowdata, function(i, el) {
-	        if ($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-	    });
-	    rowdata = uniqueNames;
-
-		rowdata.sort();
-
-		pivot_row_length = parseInt(rowdata.length) + 2;
-	}
-
-	if(value_el > 0) {
-		$("#pivot_value_action").show();
-		$("#pivot_value_action").val("count");
-
-		table.find("tbody td:nth-child("+value_el+")").each(function() {
-		    if ($.inArray($(this).text(), valuedata) == -1) {
-		        valuedata.push($(this).text());
-				valuedata_all.push($(this).text());
-			}
-		});
-	}
-	else {
-		$("#pivot_value_action").hide();
-	}
-
-
-	var pivot_table = '<table id="pivot_table"></table>';
-	$(".pivot_table_container").append(pivot_table);
-
-	// setup dimension filter dropdown
-	if(filter_el > 0) {
-		if($(".pivot_table_container").find("#filter_container").length == 0)
-		{
-			var filter_container_table = '<table id="filter_container"><tr><td colspan="2">Filter by</td></tr><tr><td><span id="span_filter_container"></span></td><td><select id="select_filter_container"></select></td></tr></table>';
-			$("#pivot_table").before(filter_container_table);
-
-			$("#span_filter_container").text($(".dimension_filters").find("a:first").text());
-
-			$.each(filterdata, function(key, value) {
-			     $('#select_filter_container')
-			         .append($("<option></option>")
-			                    .attr("value",key)
-			                    .text(value));
-			});
-			$('#select_filter_container').prepend($("<option value='-1' selected='selected'>All</option>"));
-		}
-	}
-
-	var colFilter = "";
-
-	var rgt = [],
-		cgt = [];
-
-	for(i = 0; i < pivot_row_length; i++) {
-		var tr = "";
-		var td = "";
-
-		for(j = 0; j < pivot_col_length; j++) {
-			if (i == 0) {
-				if(j == 0) {
-					td += "<th><select id='rowlabelfilter'></select></th>";
-				}
-				else if(j == pivot_col_length - 1) {
-					td += "<th>Grand total</th>";
-				}
-				else {
-					td += "<th>" + columndata[j - 1] + "</th>";
-				}
-
-				if(j == 1) {
-					colFilter += "<th><select id='collabelfilter'></select></th>";
-				}
-				else {
-					colFilter += "<th></th>";
-				}
-			}
-			else if (i == pivot_row_length - 1) {
-				if(j == 0) {
-					td += "<td>Grand total</td>";
-				}
-				else if(j == pivot_col_length) {
-					td += "<td></td>";
-				}
-				else {
-					td += '<td data-attr-count="" data-attr-sum="" data-attr-avg="" data-attr-max="" data-attr-min=""></td>'; // CGT
-				}
-			}
-			else {
-				if(j == 0) {
-					td += "<td>" + rowdata[i - 1] + "</td>";
-				}
-				else if(j == pivot_col_length - 1) {
-					var vcount = rgt.length;
-
-					var vsum = 0;
-					$.each(rgt, function (index, value) {
-					    vsum = parseInt(vsum) + parseInt(value);
-					});
-					if(vsum == 0 || rgt.length == 0)
-						var vavg = 0;
-					else
-						var vavg = (parseInt(vsum) / parseInt(rgt.length)).toFixed(2)
-
-					var vmax = Math.max.apply(null, rgt) == -Infinity ? "" : Math.max.apply(null, rgt);
-					vmax == 0 ? "" : vmax;
-					var vmin = Math.min.apply(null, rgt) == Infinity ? "" : Math.min.apply(null, rgt);
-					vmin == 0 ? "" : vmin;
-
-					td += '<td data-attr-count="'+vcount+'" data-attr-sum="'+vsum+'" data-attr-avg="'+vavg+'" data-attr-max="'+vmax+'" data-attr-min="'+vmin+'">' + vcount +'</td>';
-
-					rgt = [];
-				}
-				else {
-					var value = "";
-
-					if(value_el > 0) {
-
-						var rdata = rowdata[i - 1];
-						var cdata = columndata[j - 1];
-						var vdata = valuedata_all[j - 1];
-
-						var count = 0;
-						var sum = 0;
-
-						var ftemp = [];
-						var fdata = "";
-						if(filter_el > 0) {
-                        	table.find("tbody tr td:nth-child(" + filter_el + ")").each(function(index) {
-                        	    ftemp.push($(this).text());
-                        	});
-							fdata = $( "#select_filter_container option:selected" ).text();
-						}
-
-						var rtemp = [];
-                        table.find("tbody tr td:nth-child(" + row_el + ")").each(function(index) {
-                            rtemp.push($(this).text());
-                        });
-
-                        var ctemp = [];
-                        table.find("tbody tr td:nth-child(" + col_el + ")").each(function(index) {
-                            ctemp.push($(this).text());
-                        });
-
-                        var vtemp = [];
-                        table.find("tbody tr td:nth-child(" + value_el + ")").each(function(index) {
-                            var v = $(this).text().replace(/[^a-zA-Z0-9]/g, "")
-                            vtemp.push(v);
-                        });
-
-						var minmax = [];
-						for(x=0; x<rtemp.length; x++) {
-							if(filter_el == 0 || fdata == "All" || fdata == "") {
-								if ((rtemp[x] == rdata) && (ctemp[x] == cdata) && (vtemp[x].length > 0)) {
-									count++;
-									sum += parseInt(vtemp[x]);
-									minmax.push(vtemp[x]);
-									rgt.push(vtemp[x]);
-								}
-							}
-							else {
-								if ((rtemp[x] == rdata) && (ctemp[x] == cdata) && (vtemp[x].length > 0) && (ftemp[x] == fdata)) {
-									count++;
-									sum += parseInt(vtemp[x]);
-									minmax.push(vtemp[x]);
-									rgt.push(vtemp[x]);
-								}
-							}
-						}
-
-						var vcount = count;
-						var vsum = sum;
-						if(sum == 0 ||  count == 0)
-							var vavg = 0;
-						else
-							var vavg = (sum / count).toFixed(2);
-						var vmax = Math.max.apply(null, minmax) == -Infinity ? 0 : Math.max.apply(null, minmax);
-						vmax == 0 ? "" : vmax;
-						var vmin = Math.min.apply(null, minmax) == Infinity ? 0 : Math.min.apply(null, minmax);
-						vmin == 0 ? "" : vmin;
-
-						value = vcount;
-					}
-
-					if(value == 0)
-						td += "<td></td>";
-					else
-						td += '<td data-attr-count="'+vcount+'" data-attr-sum="'+vsum+'" data-attr-avg="'+vavg+'" data-attr-max="'+vmax+'" data-attr-min="'+vmin+'">' + value +'</td>';
-				}
-			}
-		}
-
-		if(i == 0) {
-			tr = "<thead><tr>" + td + "</tr></thead>";
-		}
-		else if(i == 1) {
-			tr = "<tbody><tr>" + td + "</tr>";
-		}
-		else if(i == pivot_row_length) {
-			tr = "<tr>" + td + "</tr></tbody>";
-		}
-		else {
-			tr = "<tr>" + td + "</tr>";
-		}
-
-		$("#pivot_table").append(tr);
-	}
-
-	$("#pivot_table").find("thead").prepend("<tr>" + colFilter + "</tr>");
-
-
-	if(value_el > 0) {
-		var trows = $("#pivot_table tbody tr").length;
-		var tcols = $("#pivot_table thead tr:last-child th").length;
-
-		for(x = 1; x < tcols; x++) {
-			var cgt_count_a = [];
-			var cgt_sum_a = [];
-			var cgt_avg_a = [];
-			var cgt_max_a = [];
-			var cgt_min_a = [];
-
-			$("#pivot_table tbody tr").each(function() {
-				$(this).find("td").each(function(eqindex){
-					if(eqindex == x) {
-						if($(this).text() != 0) {
-							cgt_count_a.push($(this).attr("data-attr-count"));
-							cgt_sum_a.push($(this).attr("data-attr-sum"));
-							cgt_avg_a.push($(this).attr("data-attr-avg"));
-							cgt_max_a.push($(this).attr("data-attr-max"));
-							cgt_min_a.push($(this).attr("data-attr-min"));
-						}
-					}
-				})
-			});
-
-			var cgt_count = 0;
-			$.each(cgt_count_a, function (index, value) {
-				if(!isNaN(value) && value.length != 0) {
-			    	cgt_count = parseInt(cgt_count) + parseInt(value);
-				}
-			});
-
-			var cgt_sum = 0;
-			$.each(cgt_sum_a, function (index, value) {
-				if(!isNaN(value) && value.length != 0) {
-			    	cgt_sum = parseInt(cgt_sum) + parseInt(value);
-				}
-			});
-
-
-			var cgt_avg_sum = 0;
-			var cgt_avg_count = 0;
-			$.each(cgt_avg_a, function (index, value) {
-				if(!isNaN(value) && value.length != 0) {
-			    	cgt_avg_sum = parseInt(cgt_avg_sum) + parseInt(value);
-					if(value != 0)
-						cgt_avg_count++;
-				}
-			});
-			var cgt_avg = (cgt_avg_sum / cgt_avg_count).toFixed(2);
-
-			var cgt_max = Math.max.apply(null, cgt_max_a) == -Infinity ? "" : Math.max.apply(null, cgt_max_a);
-			cgt_max == 0 ? "" : cgt_max;
-			var cgt_min = Math.min.apply(null, cgt_min_a) == Infinity ? "" : Math.min.apply(null, cgt_min_a);
-			cgt_min == 0 ? "" : cgt_min;
-
-			cgt = [];
-
-			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-count", cgt_count);
-			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-sum", cgt_sum);
-			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-avg", cgt_avg);
-			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-max", cgt_max);
-			$("#pivot_table tbody tr:last-child td").eq(x).attr("data-attr-min", cgt_min);
-
-			$("#pivot_table tbody tr:last-child td").eq(x).text(cgt_count);
-		}
-	}
-
-
-	$.each(rowdata, function(key, value) {
-	     $('#rowlabelfilter')
-	         .append($("<option></option>")
-	                    .attr("value",key)
-	                    .text(value));
-	});
-	$('#rowlabelfilter').prepend($("<option value='-1' selected='selected'>Row labels</option>"));
-
-	$.each(columndata, function(key, value) {
-	     $('#collabelfilter')
-	         .append($("<option></option>")
-	                    .attr("value",key)
-	                    .text(value));
-	});
-	$('#collabelfilter').prepend($("<option value='-1' selected='selected'>Column labels</option>"));
-
-	enable_filter_selection(table);
-}
-
 function enable_filter_selection(table) {
-	var index = -1;
+    var index = -1;
 
-	$("#pivot_value_action").change(function(){
-		//load_pivot_template(table);
-		switch($(this).val()) {
-			case "count":
-				$("#pivot_table tbody tr td").each(function(){
-					var attr = $(this).attr('data-attr-count');
-					if (typeof attr !== typeof undefined && attr !== false) {
-					    $(this).text(attr);
-					}
-				});
-			break;
-			case "sum":
-				$("#pivot_table tbody tr td").each(function(){
-					var attr = $(this).attr('data-attr-sum');
-					if (typeof attr !== typeof undefined && attr !== false) {
-					    $(this).text(attr);
-					}
-				});
-			break;
-			case "average":
-				$("#pivot_table tbody tr td").each(function(){
-					var attr = $(this).attr('data-attr-avg');
-					if (typeof attr !== typeof undefined && attr !== false) {
-					    $(this).text(attr);
-					}
-				});
-			break;
-			case "min":
-				$("#pivot_table tbody tr td").each(function(){
-					var attr = $(this).attr('data-attr-min');
-					if (typeof attr !== typeof undefined && attr !== false) {
-					    $(this).text(attr);
-					}
-				});
-			break;
-			case "max":
-				$("#pivot_table tbody tr td").each(function(){
-					var attr = $(this).attr('data-attr-max');
-					if (typeof attr !== typeof undefined && attr !== false) {
-					    $(this).text(attr);
-					}
-				});
-			break;
-		}
-	});
+    // Start : Setup pivot value change action
+    $("#pivot_value_action").change(function() {
+        switch ($(this).val()) {
+            case "count":
+                $("#tbl_multi_pivot_table tbody tr td").each(function() {
+                    var attr = $(this).attr('data-attr-count');
+                    if (typeof attr !== typeof undefined && attr !== false) {
+                        $(this).text(attr);
+                    }
+                });
+                break;
+            case "sum":
+                $("#tbl_multi_pivot_table tbody tr td").each(function() {
+                    var attr = $(this).attr('data-attr-sum');
+                    if (typeof attr !== typeof undefined && attr !== false) {
+                        $(this).text(attr);
+                    }
+                });
+                break;
+            case "avg":
+                $("#tbl_multi_pivot_table tbody tr td").each(function() {
+                    var attr = $(this).attr('data-attr-avg');
+                    if (typeof attr !== typeof undefined && attr !== false) {
+                        $(this).text(attr);
+                    }
+                });
+                break;
+            case "min":
+                $("#tbl_multi_pivot_table tbody tr td").each(function() {
+                    var attr = $(this).attr('data-attr-min');
+                    if (typeof attr !== typeof undefined && attr !== false) {
+                        $(this).text(attr);
+                    }
+                });
+                break;
+            case "max":
+                $("#tbl_multi_pivot_table tbody tr td").each(function() {
+                    var attr = $(this).attr('data-attr-max');
+                    if (typeof attr !== typeof undefined && attr !== false) {
+                        $(this).text(attr);
+                    }
+                });
+                break;
+        }
+    });
+    // End : Setup pivot value change action
 
-	$("#rowlabelfilter").change(function() {
-		var text = $("#rowlabelfilter option:selected").text();
+    $("#rowlabelfilter").change(function() {
+        var text = $("#rowlabelfilter option:selected").text();
 
-		if(text == "Row labels") {
-			$("#pivot_table").find("tbody tr").css("color", "black");
-			$("#pivot_table").find("tbody tr").css("background-color", "transparent");
-		}
-		else {
-			$("#pivot_table").find("tbody tr").each(function(){
-				$(this).find("td").eq(0).each(function(cindex){
-					if($(this).text() == text) {
-						index = $(this).parent().index();
-					}
-				});
-			});
+        if (text == "Row labels") {
+            $("#pivot_table").find("tbody tr").css("color", "black");
+            $("#pivot_table").find("tbody tr").css("background-color", "transparent");
+        } else {
+            $("#pivot_table").find("tbody tr").each(function() {
+                $(this).find("td").eq(0).each(function(cindex) {
+                    if ($(this).text() == text) {
+                        index = $(this).parent().index();
+                    }
+                });
+            });
 
-			$("#pivot_table").find("tbody tr").css("color", "black");
-			$("#pivot_table").find("tbody tr").css("background-color", "transparent");
-			$("#pivot_table").find("tbody tr").eq(index).css("color", "white");
-			$("#pivot_table").find("tbody tr").eq(index).css("background-color", "#D50000");
-		}
+            $("#pivot_table").find("tbody tr").css("color", "black");
+            $("#pivot_table").find("tbody tr").css("background-color", "transparent");
+            $("#pivot_table").find("tbody tr").eq(index).css("color", "white");
+            $("#pivot_table").find("tbody tr").eq(index).css("background-color", "#D50000");
+        }
     });
 
-	$("#collabelfilter").change(function() {
-		var text = $("#collabelfilter option:selected").text();
+    $("#collabelfilter").change(function() {
+        var text = $("#collabelfilter option:selected").text();
 
-		if(text == "Column labels") {
-			$("td, th").css("color", "black");
-			$("td, th").css("background-color", "transparent");
-		}
-		else {
-			$("#pivot_table").find("thead tr").each(function(){
-				$(this).find("th").each(function(){
-					if($(this).text() == text) {
-						index = $(this).index();
-					}
-				})
-			});
+        if (text == "Column labels") {
+            $("td, th").css("color", "black");
+            $("td, th").css("background-color", "transparent");
+        } else {
+            $("#pivot_table").find("thead tr").each(function() {
+                $(this).find("th").each(function() {
+                    if ($(this).text() == text) {
+                        index = $(this).index();
+                    }
+                })
+            });
 
-			$("#pivot_table").find("td, th").css("color", "black");
-			$("#pivot_table").find("td, th").css("background-color", "transparent");
-			$("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("background-color", "#D50000");
-			$("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("color", "white");
-		}
+            $("#pivot_table").find("td, th").css("color", "black");
+            $("#pivot_table").find("td, th").css("background-color", "transparent");
+            $("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("background-color", "#D50000");
+            $("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("color", "white");
+        }
     });
 
-	$("#select_filter_container").change(function(){
-		load_pivot_template(table);
-	});
+    $("#select_filter_container").change(function() {
+        load_pivot_multi_level(table);
+    });
 }
+
+var cell_arr = [];
+
+function load_pivot_multi_level(table) {
+
+    // Reset pivot container on each action
+    $(".pivot_table_container").empty();
+
+    // Declare ID and name arrays
+    var rowid_arr = [],
+        rowid_names = [],
+        colid_arr = [],
+        colid_name = [],
+        valid_arr = [],
+        valid_name = [];
+
+    // Start : Get dimension data
+    $(".dimension_rows").find("a").each(function() {
+        rowid_arr.push($(this).attr("id"));
+        rowid_names.push($(this).text());
+    });
+
+    $(".dimension_columns").find("a").each(function() {
+        colid_arr.push($(this).attr("id"));
+        colid_name.push($(this).text());
+    });
+
+    $(".dimension_values").find("a").each(function() {
+        valid_arr.push($(this).attr("id"));
+        valid_name.push($(this).text());
+    });
+    // End : Get dimension data
+
+    // Start : Setup row dimension
+    if (rowid_arr.length > 0) {
+        var thead = "";
+        var thead_label = "<th colspan='" + rowid_arr.length + "'>Row labels</th>";
+        for (i = 0; i < rowid_arr.length; i++) {
+            thead += "<th data-attr-thead_rowid='" + rowid_arr[i] + "' class='thead_row_el'>" + rowid_names[i] + "</th>";
+        }
+        thead = "<thead><tr>" + thead_label + "</tr><tr>" + thead + "</tr></thead>";
+
+        var total_rows = table.find("tbody td:nth-child(" + rowid_arr[0] + ")").length;
+        var tbody = "",
+            col_data = [];
+        for (i = 0; i < total_rows; i++) {
+            var temp = [];
+            table.find("tbody tr:nth-child(" + i + ") td").each(function(index) {
+                index++;
+                if (rowid_arr.indexOf(index.toString()) > -1) {
+                    temp.push([index, $(this).text()]);
+                }
+            });
+
+            var td = "";
+            var prev_val = "";
+            var single_el_ignore = false;
+            for (j = 0; j < rowid_arr.length; j++) {
+                for (k = 0; k < temp.length; k++) {
+                    if (temp[k][0] == rowid_arr[j]) {
+                        prev_val += temp[k][1] + "~";
+
+                        td += "<td class='tbl_dimensions' data-attr-group='" + prev_val + "'>" + temp[k][1] + "</td>";
+                    }
+                }
+            }
+
+            if (td != "") {
+                tbody += "<tr>" + td + "</tr>";
+            }
+        }
+
+        var pivot_table = "<table id='tbl_multi_pivot_table'>" + thead + tbody + "</table>";
+        $(".pivot_table_container").append(pivot_table);
+
+        var total_cols = $("#tbl_multi_pivot_table thead tr:last-child th").length;
+        sort_table(1, total_cols - 1); // 1: Asc, 0:First column
+        merge_table(rowid_arr.length);
+    }
+    // End : Setup row dimension
+
+    // Start : Setup column dimension
+    if (colid_arr.length > 0) {
+
+        var temp = [],
+            temp_unique = [],
+            th = "",
+            tr = "",
+            prev_val = "",
+            col_header_names = "";
+
+        for (i = 0; i < colid_arr.length; i++) {
+            th = "";
+            temp_unique = [];
+
+            col_header_names += "<th>" + colid_name[i] + "</th>";
+
+            table.find("tbody tr td:nth-child(" + colid_arr[i] + ")").each(function(index) {
+                var value = $(this).text().replace("~", "");
+
+                if (temp[index] == null)
+                    temp.push(value);
+                else
+                    temp[index] += "~" + value;
+            });
+        }
+
+        let x = (temp) => temp.filter((v, i) => temp.indexOf(v) === i);
+        temp_unique = x(temp);
+        temp_unique.sort();
+
+        var trows = temp_unique[0].split('~');
+        for (i = 0; i < trows.length; i++) {
+            th = "";
+            prev_val = "";
+
+            for (j = 0; j < temp_unique.length; j++) {
+                var value = temp_unique[j].split('~')[i];
+
+                if (value == prev_val)
+                    th += "<th class='th_pivot_noborder' data_attr_thead_colval='" + temp_unique[j] + "'></th>";
+                else
+                    th += "<th class='th_pivot_border' data_attr_thead_colval='" + temp_unique[j] + "'>" + value + "</th>";
+
+                prev_val = temp_unique[j].split('~')[i]
+            }
+
+            if (i == 0) {
+                $("#tbl_multi_pivot_table thead tr:last-child").append(th);
+            } else {
+                var tth = "";
+                for (k = 0; k < total_cols; k++) {
+                    tth += "<th></th>";
+                }
+                th = "<tr>" + tth + th + "</tr>";
+                $("#tbl_multi_pivot_table thead").append(th);
+            }
+        }
+
+        var col_header_colspan = temp_unique.length - colid_arr.length;
+        col_header_names += "<th colspan='" + col_header_colspan + "'></th>";
+        $("#tbl_multi_pivot_table thead tr:first-child").append(col_header_names);
+    }
+    // End : Setup column dimension
+
+    // Start : Setup value dimension
+    if (valid_arr.length > 0) {
+
+        $("#pivot_value_action").show();
+        var val_action = $("#pivot_value_action").val();
+
+        var el_arr = [];
+        var el_arr_values = [];
+
+        rowid_arr.forEach(function(item, index) {
+            if (index == 0) {
+                table.find("tbody tr").each(function() {
+                    el_arr.push($(this).find("td").eq(item - 1).text() + "~");
+                });
+            } else {
+                table.find("tbody tr").each(function(rowindex) {
+                    el_arr[rowindex] += $(this).find("td").eq(item - 1).text() + "~"
+                });
+            }
+        });
+
+        colid_arr.forEach(function(item, index) {
+            table.find("tbody tr").each(function(rowindex) {
+                el_arr[rowindex] += $(this).find("td").eq(item - 1).text() + "~"
+            });
+        });
+
+        valid_arr.forEach(function(item, index) {
+            table.find("tbody tr").each(function(rowindex) {
+                el_arr[rowindex] += $(this).find("td").eq(item - 1).text() + "~"
+            });
+        });
+
+        el_arr.sort();
+
+        var values_arr_len = el_arr[0].split('~').length;
+        var valid_arr_len = valid_arr.length;
+        var row_col_len = values_arr_len - valid_arr_len;
+
+        for (i = 0; i < total_rows; i++) {
+            td = "";
+
+            var row_group = $("#tbl_multi_pivot_table tbody tr:nth-child(" + i + ") td.tbl_dimensions:last").attr("data-attr-group");
+
+            if (row_group != null) {
+                for (j = 0; j < temp_unique.length; j++) {
+
+                    var cid = rowid_arr.length + j + 1;
+                    var cval = $("#tbl_multi_pivot_table thead tr:last-child th:nth-child(" + cid + ")").attr("data_attr_thead_colval");
+
+                    var tdval = row_group + cval + "~";
+
+                    var count = 0,
+                        sum = 0,
+                        avg = 0,
+                        min = 0,
+                        max = 0,
+                        minmaxarr = [];
+
+                    count = $.grep(el_arr, function(elem) {
+                        var temp = elem;
+                        var split = elem.split("~");
+                        elem = elem.split("~").slice(0, split.length - 2).join("~") + "~";
+
+                        if (elem === tdval) {
+                            var tempval = temp.slice(0, -1).split(/[~ ]+/).pop().replace(/[^a-zA-Z0-9]/g, "");
+                            sum = parseFloat(sum) + parseFloat(tempval);
+                            minmaxarr.push(tempval);
+                        }
+
+                        return elem === tdval;
+                    }).length;
+
+                    if (count == 0 || sum == 0)
+                        avg = 0;
+                    else
+                        avg = (sum / count).toFixed(2);
+
+                    if (count == 0) count = "";
+                    if (sum == 0) sum = "";
+                    if (avg == 0) avg = "";
+
+                    max = Math.max.apply(null, minmaxarr) == -Infinity ? "" : Math.max.apply(null, minmaxarr);
+                    min = Math.min.apply(null, minmaxarr) == Infinity ? "" : Math.min.apply(null, minmaxarr);
+
+                    var value_to_show = "";
+                    switch (val_action) {
+                        case "count":
+                            value_to_show = count;
+                            break;
+                        case "sum":
+                            value_to_show = sum;
+                            break;
+                        case "avg":
+                            value_to_show = avg;
+                            break;
+                        case "min":
+                            value_to_show = min;
+                            break;
+                        case "max":
+                            value_to_show = max;
+                            break;
+                        default:
+                            value_to_show = count;
+                            break;
+                    }
+
+                    td += "<td data-attr-count='" + count + "' data-attr-sum='" + sum + "' data-attr-avg='" + avg + "' data-attr-min='" + min + "' data-attr-max='" + max + "'>" + value_to_show + "</td>";
+                }
+                $("#tbl_multi_pivot_table tbody tr:nth-child(" + i + ")").append(td);
+            }
+        }
+    }
+    // End : Setup value dimension
+
+}
+
+function sort_table(f, n) {
+    var rows = $('#tbl_multi_pivot_table tbody  tr').get();
+
+    rows.sort(function(a, b) {
+        var A = getVal(a);
+        var B = getVal(b);
+
+        if (A < B) {
+            return -1 * f;
+        }
+        if (A > B) {
+            return 1 * f;
+        }
+        return 0;
+    });
+
+    function getVal(elm) {
+        var v = $(elm).children('td').eq(n).attr('data-attr-group'); //text().toUpperCase();
+        if ($.isNumeric(v)) {
+            v = parseInt(v, 10);
+        }
+        return v;
+    }
+
+    $.each(rows, function(index, row) {
+        $('#tbl_multi_pivot_table').children('tbody').append(row);
+    });
+}
+
+function merge_table(row_length) {
+    var total_rows = $("#tbl_multi_pivot_table tbody tr").length;
+    var total_cols = $("#tbl_multi_pivot_table thead tr:last-child th").length;
+
+    for (i = 1; i <= total_cols; i++) {
+        var val = "";
+        $("#tbl_multi_pivot_table tbody tr td:nth-child(" + i + ")").each(function(index) {
+            var attr = $(this).attr("data-attr-group");
+            if (val == attr) {
+                if (row_length == 1)
+                    $(this).parent().remove();
+                else {
+                    $(this).text("");
+                    $(this).addClass("td_pivot_borderless");
+                }
+            } else {
+                $(this).addClass("td_pivot_border");
+            }
+            val = attr;
+        });
+    }
+}
+
+
+
 
 // END
 // PIVOT TABLE 2.0
@@ -2042,13 +1974,13 @@ function setup_graph_area(table) {
     var graph = '<div class="graph_container"><p><span id="span_chart_label"></span></p><div class="graph_container_graphs"></div></div>';
     $(".graph_area").append(graph);
 
-    var charttype = '<p>Select chart type</p>'
-			+'<a id="bar"class="chart_active">Bar chart</a>'
-			+'<a id="column">Column chart</a>'
-			+'<a id="pie">Pie chart</a>'
-			+'<a id="doughnut">Doughnut chart</a>'
-			+'<a id="line">Line chart</a>';
-			//+'<a id="area" class="chart_active">Area chart</a>';
+    var charttype = '<p>Select chart type</p>' +
+        '<a id="bar"class="chart_active">Bar chart</a>' +
+        '<a id="column">Column chart</a>' +
+        '<a id="pie">Pie chart</a>' +
+        '<a id="doughnut">Doughnut chart</a>' +
+        '<a id="line">Line chart</a>';
+    //+'<a id="area" class="chart_active">Area chart</a>';
 
     $(".graph_type").append(charttype);
 
@@ -2064,18 +1996,18 @@ function setup_graph_area(table) {
         $("#span_chart_label").text($(this).val())
     });
 
-	$(".graph_type a").on("click", function(){
-		$('.graph_type').children('a').each(function () {
-			$(this).removeClass("chart_active");
-		});
-		$(this).addClass("chart_active");
+    $(".graph_type a").on("click", function() {
+        $('.graph_type').children('a').each(function() {
+            $(this).removeClass("chart_active");
+        });
+        $(this).addClass("chart_active");
 
-	    var row_el = $(".chart_row").find("a:first").attr("id");
-	    var col_el = $(".chart_column").find("a:first").attr("id");
-		if (row_el > 0 && col_el > 0) {
-			load_chart(table, get_chart_type());
-		}
-	});
+        var row_el = $(".chart_row").find("a:first").attr("id");
+        var col_el = $(".chart_column").find("a:first").attr("id");
+        if (row_el > 0 && col_el > 0) {
+            load_chart(table, get_chart_type());
+        }
+    });
 }
 
 function enable_drag_drop_chart(table) {
@@ -2115,12 +2047,12 @@ function enable_drag_drop_chart(table) {
 }
 
 function get_chart_type() {
-	var charttype = "";
-	$('.graph_type').children('a').each(function () {
-		if(this.className == "chart_active")
-			charttype = this.id;
-	});
-	return charttype;
+    var charttype = "";
+    $('.graph_type').children('a').each(function() {
+        if (this.className == "chart_active")
+            charttype = this.id;
+    });
+    return charttype;
 }
 
 function load_chart(table, charttype) {
@@ -2141,49 +2073,48 @@ function load_chart(table, charttype) {
 
     if (col_el > 0) {
         table.find("tbody td:nth-child(" + col_el + ")").each(function() {
-			columndata.push($(this).text());
+            columndata.push($(this).text());
         });
     }
 
     if (row_el > 0) {
         table.find("tbody td:nth-child(" + row_el + ")").each(function() {
-			rowdata.push($(this).text());
+            rowdata.push($(this).text());
         });
     }
 
-	var col_total =  0;
-	for(var i=0;i<columndata.length;i++)
-	{
-		if(isNaN(columndata[i])) {
-	    	continue;
-	 	}
-		col_total += Number(columndata[i]);
-	}
+    var col_total = 0;
+    for (var i = 0; i < columndata.length; i++) {
+        if (isNaN(columndata[i])) {
+            continue;
+        }
+        col_total += Number(columndata[i]);
+    }
 
-	var chartarea_width = 500;
+    var chartarea_width = 500;
 
-	if(columndata.length > 0 && rowdata.length > 0) {
-		switch(charttype) {
-			case "bar":
-				draw_bar_chart(rowdata, columndata);
-			break;
-			case "pie":
-				draw_pie_chart(rowdata, columndata, col_total);
-			break;
-			case "column":
-				draw_column_chart(rowdata, columndata, col_total);
-			break;
-			case "doughnut":
-				draw_doughnut_chart(rowdata, columndata, col_total);
-			break;
-			case "area":
-				draw_area_chart(rowdata, columndata, col_total);
-			break;
-			case "line":
-				draw_line_chart(rowdata, columndata, col_total);
-			break;
-		}
-	}
+    if (columndata.length > 0 && rowdata.length > 0) {
+        switch (charttype) {
+            case "bar":
+                draw_bar_chart(rowdata, columndata);
+                break;
+            case "pie":
+                draw_pie_chart(rowdata, columndata, col_total);
+                break;
+            case "column":
+                draw_column_chart(rowdata, columndata, col_total);
+                break;
+            case "doughnut":
+                draw_doughnut_chart(rowdata, columndata, col_total);
+                break;
+            case "area":
+                draw_area_chart(rowdata, columndata, col_total);
+                break;
+            case "line":
+                draw_line_chart(rowdata, columndata, col_total);
+                break;
+        }
+    }
 }
 
 function getRandomColor() {
@@ -2192,255 +2123,255 @@ function getRandomColor() {
     for (var i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
-	if(color == "#FFFFFF")
-		getRandomColor();
-	else
-    	return color;
+    if (color == "#FFFFFF")
+        getRandomColor();
+    else
+        return color;
 }
 
 function draw_bar_chart(rowdata, columndata) {
-	var bardata = "";
-	var counter = 50;
-	var chart_height = 32 * rowdata.length;
+    var bardata = "";
+    var counter = 50;
+    var chart_height = 32 * rowdata.length;
 
-	var max_value = Math.max.apply(Math, columndata);
+    var max_value = Math.max.apply(Math, columndata);
 
-	for(i = 0; i < rowdata.length; i++) {
-		var bar_width = Math.ceil((parseInt(columndata[i]) / max_value) * 100);
+    for (i = 0; i < rowdata.length; i++) {
+        var bar_width = Math.ceil((parseInt(columndata[i]) / max_value) * 100);
 
-		var translate = parseInt(counter) + 15;
-		var translate_data = 500 * bar_width / 100;
-		var translate_data2 = counter + 15;
+        var translate = parseInt(counter) + 15;
+        var translate_data = 500 * bar_width / 100;
+        var translate_data2 = counter + 15;
 
-		bardata += '<g id="'+rowdata[i]+'" role="listitem">'
-				+'<rect class="bar" x="10" y="'+counter+'" width="'+bar_width+'%" height="20" role="presentation" stroke="#0099FF" fill="#0099FF"></rect>'
-				+'<text class="series" transform="translate(0.1 '+translate+')" role="presentation" style="text-anchor: end">'+rowdata[i]+'</text>'
-				+'<text class="data" transform="translate('+translate_data+' '+translate_data2+')" style="text-anchor: end" fill="white">'+columndata[i]+'</text>'
-			+'</g>';
+        bardata += '<g id="' + rowdata[i] + '" role="listitem">' +
+            '<rect class="bar" x="10" y="' + counter + '" width="' + bar_width + '%" height="20" role="presentation" stroke="#0099FF" fill="#0099FF"></rect>' +
+            '<text class="series" transform="translate(0.1 ' + translate + ')" role="presentation" style="text-anchor: end">' + rowdata[i] + '</text>' +
+            '<text class="data" transform="translate(' + translate_data + ' ' + translate_data2 + ')" style="text-anchor: end" fill="white">' + columndata[i] + '</text>' +
+            '</g>';
 
-		counter = counter + 30;
-	}
-	bardata = '<g id="bars" role="list" aria-label="bar graph">' + bardata + '</g>';
-	bardata = bardata + '<line class="af" x1="42.2" y1="'+chart_height+'" x2="42.2" y2="43.4" role="presentation"></line>';
-	bardata = '<svg width="500" height="'+chart_height+'" viewBox="0 0 500 '+chart_height+'">' + bardata + '</svg>';
+        counter = counter + 30;
+    }
+    bardata = '<g id="bars" role="list" aria-label="bar graph">' + bardata + '</g>';
+    bardata = bardata + '<line class="af" x1="42.2" y1="' + chart_height + '" x2="42.2" y2="43.4" role="presentation"></line>';
+    bardata = '<svg width="500" height="' + chart_height + '" viewBox="0 0 500 ' + chart_height + '">' + bardata + '</svg>';
 
-	$(".graph_container_graphs").append(bardata);
+    $(".graph_container_graphs").append(bardata);
 }
 
 function draw_pie_chart(rowdata, columndata, col_total) {
 
-	var pieslice_json = "";
-	var slices = [];
-	var legend_table = "";
-	var pie_color = [];
+    var pieslice_json = "";
+    var slices = [];
+    var legend_table = "";
+    var pie_color = [];
 
-	for(i = 0; i < rowdata.length; i++) {
-		var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2));
+    for (i = 0; i < rowdata.length; i++) {
+        var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2));
 
-		var piecolor = "";
-		do {
-			piecolor = getRandomColor();
-		}while(jQuery.inArray(piecolor, pie_color) !== -1)
+        var piecolor = "";
+        do {
+            piecolor = getRandomColor();
+        } while (jQuery.inArray(piecolor, pie_color) !== -1)
 
 
-		let pie_size_el = {
-		  percent: pie_size,
-		  color: piecolor
-		};
-		slices.push(pie_size_el);
+        let pie_size_el = {
+            percent: pie_size,
+            color: piecolor
+        };
+        slices.push(pie_size_el);
 
-		legend_table += '<tr><td style="background-color:'+piecolor+'">'+rowdata[i]+ ' - '+ pie_size +'%</td></tr>';
-	}
-	legend_table = '<table class="tbl_pie_legends">'+legend_table+'</table>';
+        legend_table += '<tr><td style="background-color:' + piecolor + '">' + rowdata[i] + ' - ' + pie_size + '%</td></tr>';
+    }
+    legend_table = '<table class="tbl_pie_legends">' + legend_table + '</table>';
 
-	var svgel = '<svg id="html2excel_pie_chart" viewBox="-1 -1 2 2" style="transform: rotate(-90deg)" width="500" height="500"></svg>';
-	var div_pie = '<div class="row"><div class="col-md-9">'+svgel+'</div><div class="col-md-3">'+legend_table+'</div></div>';
-	$(".graph_container_graphs").append(div_pie);
+    var svgel = '<svg id="html2excel_pie_chart" viewBox="-1 -1 2 2" style="transform: rotate(-90deg)" width="500" height="500"></svg>';
+    var div_pie = '<div class="row"><div class="col-md-9">' + svgel + '</div><div class="col-md-3">' + legend_table + '</div></div>';
+    $(".graph_container_graphs").append(div_pie);
 
-	let cumulativePercent = 0;
+    let cumulativePercent = 0;
 
-	function getCoordinatesForPercent(percent) {
-	  	const x = Math.cos(2 * Math.PI * percent);
-	  	const y = Math.sin(2 * Math.PI * percent);
-	  	return [x, y];
-	}
+    function getCoordinatesForPercent(percent) {
+        const x = Math.cos(2 * Math.PI * percent);
+        const y = Math.sin(2 * Math.PI * percent);
+        return [x, y];
+    }
 
-	var svgpath = "";
+    var svgpath = "";
 
-	slices.forEach(slice => {
-	  	const [startX, startY] = getCoordinatesForPercent(cumulativePercent);
-	  	cumulativePercent = parseFloat(cumulativePercent) + parseFloat(slice.percent);
-	  	const [endX, endY] = getCoordinatesForPercent(cumulativePercent);
-	  	const largeArcFlag = slice.percent > .5 ? 1 : 0;
-	  	const pathData = [
-	  	  `M ${startX} ${startY}`,
-	  	  `A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`,
-	  	  `L 0 0`, // Line
-	  	].join(' ');
+    slices.forEach(slice => {
+        const [startX, startY] = getCoordinatesForPercent(cumulativePercent);
+        cumulativePercent = parseFloat(cumulativePercent) + parseFloat(slice.percent);
+        const [endX, endY] = getCoordinatesForPercent(cumulativePercent);
+        const largeArcFlag = slice.percent > .5 ? 1 : 0;
+        const pathData = [
+            `M ${startX} ${startY}`,
+            `A 1 1 0 ${largeArcFlag} 1 ${endX} ${endY}`,
+            `L 0 0`, // Line
+        ].join(' ');
 
-	  	const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-	  	pathEl.setAttribute('d', pathData);
-	  	pathEl.setAttribute('fill', slice.color);
+        const pathEl = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathEl.setAttribute('d', pathData);
+        pathEl.setAttribute('fill', slice.color);
 
-		$("#html2excel_pie_chart").append(pathEl);
-	});
+        $("#html2excel_pie_chart").append(pathEl);
+    });
 }
 
 function draw_column_chart(rowdata, columndata, col_total) {
 
-	var total_bars = columndata.length;
-	var bar_width = 40;
-	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
+    var total_bars = columndata.length;
+    var bar_width = 40;
+    var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
 
-	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
-	max_bar_height = parseFloat(max_bar_height) + 50;
+    var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
+    max_bar_height = parseFloat(max_bar_height) + 50;
 
-	var labelxval = parseInt(max_bar_height) + 5;
+    var labelxval = parseInt(max_bar_height) + 5;
 
-	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var xaxis_line = '<line x1="' + bar_width + '" x2="' + svg_width + '" y1="' + max_bar_height + '" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var yaxis_line = '<line x1="' + bar_width + '" x2="' + bar_width + '" y1="10" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
 
-	var xaxis_label = "";
-	var xlabel_start = 70
-	for(i = 0; i < rowdata.length; i++) {
-		xaxis_label += '<g><text y="'+xlabel_start+'" x="-'+labelxval+'" style="text-anchor: end;" transform="rotate(-90)">'+rowdata[i]+'</text></g>';
-		xlabel_start = parseInt(xlabel_start) + 40;
-	}
-	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
+    var xaxis_label = "";
+    var xlabel_start = 70
+    for (i = 0; i < rowdata.length; i++) {
+        xaxis_label += '<g><text y="' + xlabel_start + '" x="-' + labelxval + '" style="text-anchor: end;" transform="rotate(-90)">' + rowdata[i] + '</text></g>';
+        xlabel_start = parseInt(xlabel_start) + 40;
+    }
+    xaxis_label = '<g class="col_x_axis">' + xaxis_label + '</g>';
 
-	var yaxis_grid = "";
-	var total_grid_lines = 10;
-	var grid_line_gap = max_bar_height / total_grid_lines;
-	var y_val = 25;
-	for(i = 0; i < total_grid_lines - 1; i++) {
-		yaxis_grid += '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+y_val+'" y2="'+y_val+'" style="stroke:#E5E8E8;stroke-width:1"></line>';
-		y_val = parseInt(y_val) + parseInt(grid_line_gap);
-	}
-	yaxis_grid = '<g class="col_y_grid_line">'+yaxis_grid+'</g>';
+    var yaxis_grid = "";
+    var total_grid_lines = 10;
+    var grid_line_gap = max_bar_height / total_grid_lines;
+    var y_val = 25;
+    for (i = 0; i < total_grid_lines - 1; i++) {
+        yaxis_grid += '<line x1="' + bar_width + '" x2="' + svg_width + '" y1="' + y_val + '" y2="' + y_val + '" style="stroke:#E5E8E8;stroke-width:1"></line>';
+        y_val = parseInt(y_val) + parseInt(grid_line_gap);
+    }
+    yaxis_grid = '<g class="col_y_grid_line">' + yaxis_grid + '</g>';
 
-	var rect = "";
-	var xaxis_bar_text = "";
-	var x2 = 42;
-	for(i = 0; i < rowdata.length; i++) {
-		var y = parseInt(max_bar_height) -  parseInt(columndata[i]);
-		rect += '<rect width="40" height="'+columndata[i]+'" x="'+x2+'" y="'+y+'" style="fill:#0099FF;"></rect>';
+    var rect = "";
+    var xaxis_bar_text = "";
+    var x2 = 42;
+    for (i = 0; i < rowdata.length; i++) {
+        var y = parseInt(max_bar_height) - parseInt(columndata[i]);
+        rect += '<rect width="40" height="' + columndata[i] + '" x="' + x2 + '" y="' + y + '" style="fill:#0099FF;"></rect>';
 
-		var newx = parseInt(x2)+parseInt(10);
-		var newy = parseInt(y)-parseInt(5);
-		xaxis_bar_text += '<text x="'+newx+'" y="'+newy+'">'+columndata[i]+'</text>';
+        var newx = parseInt(x2) + parseInt(10);
+        var newy = parseInt(y) - parseInt(5);
+        xaxis_bar_text += '<text x="' + newx + '" y="' + newy + '">' + columndata[i] + '</text>';
 
-		x2 = parseInt(x2) + 42;
-	}
+        x2 = parseInt(x2) + 42;
+    }
 
-	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+yaxis_grid+xaxis_label+rect+xaxis_bar_text+'</svg>';
-	$(".graph_container_graphs").append(svg);
+    var svg = '<svg id="svg" width="' + svg_width + 'px" height="' + max_bar_height + 'px">' + xaxis_line + yaxis_line + yaxis_grid + xaxis_label + rect + xaxis_bar_text + '</svg>';
+    $(".graph_container_graphs").append(svg);
 }
 
 function draw_doughnut_chart(rowdata, columndata, col_total) {
-	var radius = 15;
-	var cx = 21;
-	var cy = 21;
+    var radius = 15;
+    var cx = 21;
+    var cy = 21;
 
-	var hole = '<g class="donut-hole"><circle cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="#fff"></circle></g>';
-	var ring = '<g class="donut-ring"><circle cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle></g>';
+    var hole = '<g class="donut-hole"><circle cx="' + cx + '" cy="' + cy + '" r="' + radius + '" fill="#fff"></circle></g>';
+    var ring = '<g class="donut-ring"><circle cx="' + cx + '" cy="' + cy + '" r="' + radius + '" fill="transparent" stroke="#d2d3d4" stroke-width="3"></circle></g>';
 
-	var segment = "";
-	var legend_table = "";
-	var offset = 25;
-	for(i = 0; i < rowdata.length; i++) {
-		var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2)) * 100;
-		var pie_size_balance = parseFloat(100) - parseFloat(pie_size);
-		var piecolor = getRandomColor();
+    var segment = "";
+    var legend_table = "";
+    var offset = 25;
+    for (i = 0; i < rowdata.length; i++) {
+        var pie_size = ((parseInt(columndata[i]) / col_total).toFixed(2)) * 100;
+        var pie_size_balance = parseFloat(100) - parseFloat(pie_size);
+        var piecolor = getRandomColor();
 
-		if(i > 0)
-			offset = parseInt(offset) + parseFloat(pie_size);
+        if (i > 0)
+            offset = parseInt(offset) + parseFloat(pie_size);
 
-		segment += '<circle data-per="'+pie_size+'" cx="'+cx+'" cy="'+cy+'" r="'+radius+'" fill="transparent" stroke="'+piecolor+'" stroke-width="3" stroke-dasharray="'+pie_size+' '+pie_size_balance+'" stroke-dashoffset="'+offset+'"></circle>';
+        segment += '<circle data-per="' + pie_size + '" cx="' + cx + '" cy="' + cy + '" r="' + radius + '" fill="transparent" stroke="' + piecolor + '" stroke-width="3" stroke-dasharray="' + pie_size + ' ' + pie_size_balance + '" stroke-dashoffset="' + offset + '"></circle>';
 
-		legend_table += '<tr><td style="background-color:'+piecolor+'">'+rowdata[i]+ ' - '+ pie_size +'%</td></tr>';
-	}
-	segment = '<g class="donut-segment">'+segment+'</g>';
-	legend_table = '<table class="tbl_pie_legends">'+legend_table+'</table>';
+        legend_table += '<tr><td style="background-color:' + piecolor + '">' + rowdata[i] + ' - ' + pie_size + '%</td></tr>';
+    }
+    segment = '<g class="donut-segment">' + segment + '</g>';
+    legend_table = '<table class="tbl_pie_legends">' + legend_table + '</table>';
 
-	var svg = '<svg width="300px" height="300px" viewBox="0 0 42 42" class="donut">'+hole+ring+segment+'</svg>';
+    var svg = '<svg width="300px" height="300px" viewBox="0 0 42 42" class="donut">' + hole + ring + segment + '</svg>';
 
-	var doughnut_chart = '<div class="row"><div class="col-md-9">'+svg+'</div><div class="col-md-3">'+legend_table	+'</div></div>';
+    var doughnut_chart = '<div class="row"><div class="col-md-9">' + svg + '</div><div class="col-md-3">' + legend_table + '</div></div>';
 
-	$(".graph_container_graphs").append(doughnut_chart);
+    $(".graph_container_graphs").append(doughnut_chart);
 }
 
 function draw_line_chart(rowdata, columndata, col_total) {
 
-	var total_bars = columndata.length;
-	var bar_width = 40;
-	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
+    var total_bars = columndata.length;
+    var bar_width = 40;
+    var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
 
-	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
-	max_bar_height = parseFloat(max_bar_height) + 50;
+    var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
+    max_bar_height = parseFloat(max_bar_height) + 50;
 
-	var labelxval = parseInt(max_bar_height) + 5;
+    var labelxval = parseInt(max_bar_height) + 5;
 
-	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var xaxis_line = '<line x1="' + bar_width + '" x2="' + svg_width + '" y1="' + max_bar_height + '" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var yaxis_line = '<line x1="' + bar_width + '" x2="' + bar_width + '" y1="10" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
 
-	var xaxis_label = "";
-	var points = "";
-	var axis_text = "";
-	var pointstart = 40;
-	var xlabel_start = 70
-	for(i = 0; i < rowdata.length; i++) {
-		xaxis_label += '<g><text y="'+xlabel_start+'" x="-'+labelxval+'" style="text-anchor: end;" transform="rotate(-90)">'+rowdata[i]+'</text></g>';
-		xlabel_start = parseInt(xlabel_start) + 40;
+    var xaxis_label = "";
+    var points = "";
+    var axis_text = "";
+    var pointstart = 40;
+    var xlabel_start = 70
+    for (i = 0; i < rowdata.length; i++) {
+        xaxis_label += '<g><text y="' + xlabel_start + '" x="-' + labelxval + '" style="text-anchor: end;" transform="rotate(-90)">' + rowdata[i] + '</text></g>';
+        xlabel_start = parseInt(xlabel_start) + 40;
 
-		var value = parseInt(max_bar_height) - parseFloat(columndata[i])
-		points += pointstart + " " + value + ",";
+        var value = parseInt(max_bar_height) - parseFloat(columndata[i])
+        points += pointstart + " " + value + ",";
 
-		axis_text += '<text x="'+pointstart+'" y="'+value+'">'+columndata[i]+'</text>';
+        axis_text += '<text x="' + pointstart + '" y="' + value + '">' + columndata[i] + '</text>';
 
-		pointstart = parseInt(pointstart) + parseInt(40);
-	}
-	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
-	var polyline = '<polyline fill="none" stroke="#0099FF" stroke-width="2" points="'+points+'" />';
+        pointstart = parseInt(pointstart) + parseInt(40);
+    }
+    xaxis_label = '<g class="col_x_axis">' + xaxis_label + '</g>';
+    var polyline = '<polyline fill="none" stroke="#0099FF" stroke-width="2" points="' + points + '" />';
 
-	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+xaxis_label+polyline+axis_text+'</svg>';
-	$(".graph_container_graphs").append(svg);
+    var svg = '<svg id="svg" width="' + svg_width + 'px" height="' + max_bar_height + 'px">' + xaxis_line + yaxis_line + xaxis_label + polyline + axis_text + '</svg>';
+    $(".graph_container_graphs").append(svg);
 }
 
 function draw_area_chart(rowdata, columndata, col_total) {
 
-	var total_bars = columndata.length;
-	var bar_width = 40;
-	var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
+    var total_bars = columndata.length;
+    var bar_width = 40;
+    var svg_width = (parseInt(total_bars) * parseInt(bar_width)) + (parseInt(total_bars) * 2);
 
-	var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
-	max_bar_height = parseFloat(max_bar_height) + 50;
+    var max_bar_height = Math.max.apply(null, columndata) == -Infinity ? 0 : Math.max.apply(null, columndata);
+    max_bar_height = parseFloat(max_bar_height) + 50;
 
-	var labelxval = parseInt(max_bar_height) + 5;
+    var labelxval = parseInt(max_bar_height) + 5;
 
-	var xaxis_line = '<line x1="'+bar_width+'" x2="'+svg_width+'" y1="'+max_bar_height+'" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
-	var yaxis_line = '<line x1="'+bar_width+'" x2="'+bar_width+'" y1="10" y2="'+max_bar_height+'" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var xaxis_line = '<line x1="' + bar_width + '" x2="' + svg_width + '" y1="' + max_bar_height + '" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
+    var yaxis_line = '<line x1="' + bar_width + '" x2="' + bar_width + '" y1="10" y2="' + max_bar_height + '" style="stroke:#E5E8E8;stroke-width:2"></line>';
 
-	var xaxis_label = "";
-	var points = "";
-	var axis_text = "";
-	var pointstart = 40;
-	var xlabel_start = 70
-	for(i = 0; i < rowdata.length; i++) {
-		xaxis_label += '<g><text y="'+xlabel_start+'" x="-'+labelxval+'" style="text-anchor: end;" transform="rotate(-90)">'+rowdata[i]+'</text></g>';
-		xlabel_start = parseInt(xlabel_start) + 40;
+    var xaxis_label = "";
+    var points = "";
+    var axis_text = "";
+    var pointstart = 40;
+    var xlabel_start = 70
+    for (i = 0; i < rowdata.length; i++) {
+        xaxis_label += '<g><text y="' + xlabel_start + '" x="-' + labelxval + '" style="text-anchor: end;" transform="rotate(-90)">' + rowdata[i] + '</text></g>';
+        xlabel_start = parseInt(xlabel_start) + 40;
 
-		var value = parseInt(max_bar_height) - parseFloat(columndata[i])
-		points += pointstart + " " + value + ",";
+        var value = parseInt(max_bar_height) - parseFloat(columndata[i])
+        points += pointstart + " " + value + ",";
 
-		axis_text += '<text x="'+pointstart+'" y="'+value+'">'+columndata[i]+'</text>';
+        axis_text += '<text x="' + pointstart + '" y="' + value + '">' + columndata[i] + '</text>';
 
-		pointstart = parseInt(pointstart) + parseInt(40);
-	}
-	xaxis_label = '<g class="col_x_axis">'+xaxis_label+'</g>';
-	var polyline = '<polyline fill="#ccc" stroke="#0099FF" stroke-width="2" points="'+points+'" />';
+        pointstart = parseInt(pointstart) + parseInt(40);
+    }
+    xaxis_label = '<g class="col_x_axis">' + xaxis_label + '</g>';
+    var polyline = '<polyline fill="#ccc" stroke="#0099FF" stroke-width="2" points="' + points + '" />';
 
-	var svg = '<svg id="svg" width="'+svg_width+'px" height="'+max_bar_height+'px">'+xaxis_line+yaxis_line+xaxis_label+polyline+axis_text+'</svg>';
-	$(".graph_container_graphs").append(svg);
+    var svg = '<svg id="svg" width="' + svg_width + 'px" height="' + max_bar_height + 'px">' + xaxis_line + yaxis_line + xaxis_label + polyline + axis_text + '</svg>';
+    $(".graph_container_graphs").append(svg);
 }
 
 // END
