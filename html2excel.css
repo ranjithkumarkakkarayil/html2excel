@@ -1038,9 +1038,43 @@ input[type="number"]:focus {
 	overflow-y: scroll;
 }
 
+
 #tbl_multi_pivot_table {
 	width:100% !important;
 	border:1px solid #E4E5E5;
+}
+
+.td_th_gt {
+	font-weight: bold;
+}
+
+#chk_gt {
+	color:white !important;
+	cursor: pointer;
+}
+
+#tbl_multi_pivot_table tbody tr:last-child td.td_th_gt {
+	border-top:3px double #ECF0F1;
+}
+
+#tbl_multi_pivot_table tbody tr td:last-child.td_th_gt {
+	border-left:3px double #ECF0F1;
+}
+
+#tbl_multi_pivot_table thead tr th:last-child.td_th_gt {
+	border-left:3px double white;
+}
+
+.tbl_pivot_actions tr td {
+	background-color: #ECF0F1;
+	padding:3px 10px;
+	text-align: center;
+	border:1px solid white;
+}
+
+.tbl_pivot_value_actions tr td:last-child {
+	padding:3px 10px;
+	text-align: center;
 }
 
 

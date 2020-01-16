@@ -676,6 +676,7 @@ function table_pagination($this) {
 
 function table_sort($this) {
     $this.find("thead tr th").dblclick(function() {
+        if($(this).attr("class") != "html2excel_first_cell") {
         var selCol = $(this).parent().children().index($(this));
         var table,
             rows,
@@ -719,6 +720,7 @@ function table_sort($this) {
                     switching = true;
                 }
             }
+        }
         }
     });
 }
@@ -1478,19 +1480,69 @@ function create_pivot(table) {
     enable_filter_selection(table);
 }
 
-
 function setup_pivot_area() {
     var pivot_container = '<div id="div_pivot_container"></div>';
     $("#tcd_pivot").append(pivot_container);
 
-    var container = '<div class="row"><div class="col-md-3 pivot_dimensions"></div><div class="col-md-9 pivot_values"></div></div>';
+    var container = '<div class="row">' +
+        '<div class="col-md-3 pivot_dimensions"></div>' +
+        '<div class="col-md-9 pivot_values"></div>' +
+        '</div>';
     $("#div_pivot_container").append(container);
-    var dimensions = '<div class="row"><div class="col-md-12"><p>Pivot table builder</p><p>Field name</p><div class="dimension_field_name"></div></div></div><div class="row"><div class="col-md-6"><p>Filters</p><div class="dimension_filters dimension_droppable"></div></div><div class="col-md-6"><p>Columns</p><div class="dimension_columns dimension_droppable"></div></div></div><div class="row"><div class="col-md-6"><p>Rows</p><div class="dimension_rows dimension_droppable"></div></div><div class="col-md-6"><p>Values</p><div class="dimension_values dimension_droppable"></div></div></div>';
+
+    var dimensions = '<div class="row">' +
+        '<div class="col-md-12">' +
+        '<p>Pivot table builder</p>' +
+        '<p>Field name</p>' +
+        '<div class="dimension_field_name"></div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="row">' +
+        '<div class="col-md-6">' +
+        '<p>Filters</p>' +
+        '<div class="dimension_filters dimension_droppable"></div>' +
+        '</div>' +
+        '<div class="col-md-6">' +
+        '<p>Columns</p>' +
+        '<div class="dimension_columns dimension_droppable"></div>' +
+        '</div>' +
+        '</div>' +
+        '<div class="row">' +
+        '<div class="col-md-6">' +
+        '<p>Rows</p>' +
+        '<div class="dimension_rows dimension_droppable"></div>' +
+        '</div>' +
+        '<div class="col-md-6">' +
+        '<p>Values</p>' +
+        '<div class="dimension_values dimension_droppable"></div>' +
+        '</div>' +
+        '</div>';
     $(".pivot_dimensions").append(dimensions);
 
-    var actions = '<p><select id="pivot_value_action" style="display:none"><option value="count">Count of value</option><option value="sum">Sum of value</option><option value="avg">Average of value</option><option value="max">Max of value</option><option value="min">Min of value</option></select></p>';
-    var pivottable_actions = '<div class="row"><div class="col-md-2">' + actions + '</div></div>';
-    $(".pivot_values").append(pivottable_actions);
+    var actions = '<select id="pivot_value_action">' +
+        '<option value="count">Count of value</option>' +
+        '<option value="sum">Sum of value</option>' +
+        '<option value="avg">Average of value</option>' +
+        '<option value="max">Max of value</option>' +
+        '<option value="min">Min of value</option>' +
+        '</select>';
+    var value_actions = '<table class="tbl_pivot_actions"><tr><td>Value operations</td></tr><tr><td>' + actions + '</td></tr></table>'
+    var grand_total = '<a id="chk_gt" class="btn btn-dark btn-xs">Hide grand total</a>';
+    var table_filter = '<div id="div_pivot_filters" style="display:none"><table class="tbl_pivot_actions"><tr><td colspan="2">Filter by</td></tr></table></div>'
+
+    var pivot_actions = '<div class="row div_pvc" id="div_pivot_action" style="display:none">' +
+        '<div class="col-md-12">' +
+        '<table class="tbl_pivot_value_actions">' +
+        '<tr>' +
+        '<td>' + table_filter + '</td>' +
+        '<td>' + value_actions + '</td>' +
+        '<td>' + grand_total + '</td>' +
+        '</tr>' +
+        '</table>' +
+        '</div>' +
+        '</div>';
+
+    $(".pivot_values").append(pivot_actions);
 
     var pivot_table_container = '<div class="pivot_table_container"></div>';
     $(".pivot_values").append(pivot_table_container);
@@ -1518,17 +1570,116 @@ function enable_drag_drop_pivot(table) {
         accept: ".dimension_field_name > a",
         drop: function(event, ui) {
             $(this).append(ui.draggable.clone());
+
+            setup_pivot_filter(table);
+
             load_pivot_multi_level(table);
 
             $(this).find("a").dblclick(function() {
                 var elid = ui.draggable.attr("id");
-                var container = $(this).parent().attr('class').split(' ')[0]
-                $("." + container).find("#" + elid).remove();
-                load_pivot_multi_level(table);
+                var cls = $(this).parent().attr('class');
+                if (cls != null) {
+                    var container = cls.split(' ')[0]
+                    $("." + container).find("#" + elid).remove();
+                    load_pivot_multi_level(table);
+
+                    if (container == "dimension_filters") {
+                        remove_pivot_filter(elid);
+                    }
+                }
             });
         }
     });
 }
+
+var row_data_arr = [];
+
+function setup_pivot_filter(table) {
+    if ($(".dimension_filters").find("a").length > 0) {
+        row_data_arr = [];
+
+        var filid_arr = [],
+            filid_name = [],
+            hasid_arr = [];
+
+        $("#div_pivot_filters table select.select_flabel").each(function() {
+            var flid = $(this).attr("data-attr-flid");
+            if (flid != null)
+                hasid_arr.push(flid);
+        });
+
+        $(".dimension_filters").find("a").each(function() {
+            filid_arr.push($(this).attr("id"));
+            filid_name.push($(this).text());
+        });
+
+        if (filid_arr.length > 0) {
+            $("#div_pivot_filters").show();
+
+            var rowid_arr = [];
+            var colid_arr = [];
+            $(".dimension_rows").find("a").each(function() {
+                rowid_arr.push($(this).attr("id"));
+            });
+
+            $(".dimension_columns").find("a").each(function() {
+                colid_arr.push($(this).attr("id"));
+            });
+
+            for (i = 0; i < filid_arr.length; i++) {
+                if (!hasid_arr.includes(filid_arr[i])) {
+
+                    var label_filter_arr = [];
+                    table.find("tbody tr td:nth-child(" + filid_arr[i] + ")").each(function() {
+                        if ($.inArray($(this).text(), label_filter_arr) == -1)
+                            label_filter_arr.push($(this).text());
+                    });
+                    label_filter_arr.sort();
+
+                    var sel_option = "<option value='-1' selected='selected'>All " + filid_name[i].toLowerCase() + "</option>";
+                    $.each(label_filter_arr, function(key, value) {
+                        sel_option += "<option value='" + value + "'>" + value + "</option>"
+                    });
+                    sel_option = '<select class="select_flabel" data-attr-flid="' + filid_arr[i] + '">' + sel_option + '</select>';
+
+                    var filter_tr = '<tr><td>' + filid_name[i] + '</td><td>' + sel_option + '</td></tr>';
+
+                    $("#div_pivot_filters table").append(filter_tr);
+                }
+            }
+
+            table.find("tbody tr").each(function() {
+                var rtemp = [];
+                for (k = 0; k < rowid_arr.length; k++) {
+                    rtemp.push($(this).find("td").eq(rowid_arr[k] - 1).text());
+                }
+
+                var vtemp = [];
+                for (k = 0; k < filid_arr.length; k++) {
+                    vtemp.push($(this).find("td").eq(filid_arr[k] - 1).text());
+                }
+
+                row_data_arr.push(rtemp.join().replace(",", "~") + "~" + vtemp.join().replace(",", "~"));
+            });
+
+        } else {
+            $("#div_pivot_filters").hide();
+        }
+    }
+}
+
+function remove_pivot_filter(id) {
+    $("#div_pivot_filters table.tbl_pivot_actions select.select_flabel").each(function() {
+        if ($(this).attr("data-attr-flid") == id) {
+            $(this).parent().parent().remove();
+        }
+    });
+
+    if ($("#div_pivot_filters table.tbl_pivot_actions select.select_flabel").length == 0)
+        $("#div_pivot_filters").hide();
+}
+
+var previndex = "";
 
 function enable_filter_selection(table) {
     var index = -1;
@@ -1580,51 +1731,66 @@ function enable_filter_selection(table) {
     });
     // End : Setup pivot value change action
 
-    $("#rowlabelfilter").change(function() {
-        var text = $("#rowlabelfilter option:selected").text();
-
-        if (text == "Row labels") {
-            $("#pivot_table").find("tbody tr").css("color", "black");
-            $("#pivot_table").find("tbody tr").css("background-color", "transparent");
+    // Start : Grand total visibility toggle
+    $("#chk_gt").click(function() {
+        if ($(this).text() == "Hide grand total") {
+            $(this).text("Show grand total");
+            $("#tbl_multi_pivot_table thead tr th.td_th_gt").hide();
+            $("#tbl_multi_pivot_table tbody tr td.td_th_gt").hide();
         } else {
-            $("#pivot_table").find("tbody tr").each(function() {
-                $(this).find("td").eq(0).each(function(cindex) {
-                    if ($(this).text() == text) {
+            $(this).text("Hide grand total");
+            $("#tbl_multi_pivot_table thead tr th.td_th_gt").show();
+            $("#tbl_multi_pivot_table tbody tr td.td_th_gt").show();
+        }
+    });
+    // End : Grand total visibility toggle
+
+    $(".select_rlabel").change(function() {
+        var colid = $(this).closest("th").attr("data-attr-col-id");
+        var text = $(this).val();
+
+        $("#tbl_multi_pivot_table").find("tbody tr").css("color", "black");
+
+        if (text.substring(0, 4) == "All ") {
+            $("#tbl_multi_pivot_table").find("tbody tr").css("color", "black");
+        } else {
+            $("#tbl_multi_pivot_table").find("tbody tr").each(function() {
+                $(this).find("td").eq(colid).each(function(cindex) {
+                    var dag = $(this).attr("data-attr-group");
+                    var dag_arr = dag.split('~');
+                    if (dag_arr.includes(text)) {
                         index = $(this).parent().index();
+                        $("#tbl_multi_pivot_table").find("tbody tr").eq(index).css("color", "red");
                     }
                 });
             });
-
-            $("#pivot_table").find("tbody tr").css("color", "black");
-            $("#pivot_table").find("tbody tr").css("background-color", "transparent");
-            $("#pivot_table").find("tbody tr").eq(index).css("color", "white");
-            $("#pivot_table").find("tbody tr").eq(index).css("background-color", "#D50000");
         }
     });
 
-    $("#collabelfilter").change(function() {
-        var text = $("#collabelfilter option:selected").text();
+    $(".select_clabel").change(function() {
+        var rows = $(".dimension_rows").find("a").length;
+        var colid = parseInt(rows) + parseInt($(this).closest("th").attr("data-attr-col-id")) + 1;
+        var text = $(this).val();
 
-        if (text == "Column labels") {
-            $("td, th").css("color", "black");
-            $("td, th").css("background-color", "transparent");
+        if (previndex != "")
+            $("#tbl_multi_pivot_table").find("td, th").filter(":nth-child(" + (previndex) + ")").css("color", "black");
+
+        if (text == "-1") {
+            $("#tbl_multi_pivot_table").find("tbody td").css("color", "black");
+            $("#tbl_multi_pivot_table").find("thead th").css("color", "black");
         } else {
-            $("#pivot_table").find("thead tr").each(function() {
-                $(this).find("th").each(function() {
-                    if ($(this).text() == text) {
-                        index = $(this).index();
-                    }
-                })
-            });
+            $("#tbl_multi_pivot_table").find("thead tr:nth-child(" + colid + ") th").each(function() {
+                if ($(this).text() == text) {
+                    index = $(this).index();
+                }
+            })
 
-            $("#pivot_table").find("td, th").css("color", "black");
-            $("#pivot_table").find("td, th").css("background-color", "transparent");
-            $("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("background-color", "#D50000");
-            $("#pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("color", "white");
+            $("#tbl_multi_pivot_table").find("td, th").filter(":nth-child(" + (index + 1) + ")").css("color", "red");
+            previndex = parseInt(index) + 1;
         }
     });
 
-    $("#select_filter_container").change(function() {
+    $(".select_flabel").change(function() {
         load_pivot_multi_level(table);
     });
 }
@@ -1635,6 +1801,7 @@ function load_pivot_multi_level(table) {
 
     // Reset pivot container on each action
     $(".pivot_table_container").empty();
+    //$(".div_filter_container").remove();
 
     // Declare ID and name arrays
     var rowid_arr = [],
@@ -1642,7 +1809,9 @@ function load_pivot_multi_level(table) {
         colid_arr = [],
         colid_name = [],
         valid_arr = [],
-        valid_name = [];
+        valid_name = [],
+        filid_arr = [],
+        filid_name = [];;
 
     // Start : Get dimension data
     $(".dimension_rows").find("a").each(function() {
@@ -1659,6 +1828,11 @@ function load_pivot_multi_level(table) {
         valid_arr.push($(this).attr("id"));
         valid_name.push($(this).text());
     });
+
+    $(".dimension_filters").find("a").each(function() {
+        filid_arr.push($(this).attr("id"));
+        filid_name.push($(this).text());
+    });
     // End : Get dimension data
 
     // Start : Setup row dimension
@@ -1666,15 +1840,34 @@ function load_pivot_multi_level(table) {
         var thead = "";
         var thead_label = "<th colspan='" + rowid_arr.length + "'>Row labels</th>";
         for (i = 0; i < rowid_arr.length; i++) {
-            thead += "<th data-attr-thead_rowid='" + rowid_arr[i] + "' class='thead_row_el'>" + rowid_names[i] + "</th>";
+
+            var label_filter_arr = [];
+            table.find("tbody tr td:nth-child(" + rowid_arr[i] + ")").each(function() {
+                if ($.inArray($(this).text(), label_filter_arr) == -1)
+                    label_filter_arr.push($(this).text());
+            });
+            label_filter_arr.sort();
+
+            var sel_option = "<option value='-1' selected='selected'>All " + rowid_names[i].toLowerCase() + "</option>";
+            $.each(label_filter_arr, function(key, value) {
+                sel_option += "<option value='" + value + "'>" + value + "</option>"
+            });
+            sel_option = '<select class="select_rlabel">' + sel_option + '</select>';
+
+            thead += "<th data-attr-col-id='" + i + "' data-attr-thead_rowid='" + rowid_arr[i] + "' class='thead_row_el'>" + sel_option + "</th>";
+
+            //thead += "<th data-attr-thead_rowid='" + rowid_arr[i] + "' class='thead_row_el'>" + rowid_names[i] + "</th>";
         }
         thead = "<thead><tr>" + thead_label + "</tr><tr>" + thead + "</tr></thead>";
 
         var total_rows = table.find("tbody td:nth-child(" + rowid_arr[0] + ")").length;
         var tbody = "",
-            col_data = [];
-        for (i = 0; i < total_rows; i++) {
+            col_data = [],
+            row_el_arr = [];
+        for (i = 0; i <= total_rows; i++) {
             var temp = [];
+
+
             table.find("tbody tr:nth-child(" + i + ") td").each(function(index) {
                 index++;
                 if (rowid_arr.indexOf(index.toString()) > -1) {
@@ -1684,12 +1877,10 @@ function load_pivot_multi_level(table) {
 
             var td = "";
             var prev_val = "";
-            var single_el_ignore = false;
             for (j = 0; j < rowid_arr.length; j++) {
                 for (k = 0; k < temp.length; k++) {
                     if (temp[k][0] == rowid_arr[j]) {
                         prev_val += temp[k][1] + "~";
-
                         td += "<td class='tbl_dimensions' data-attr-group='" + prev_val + "'>" + temp[k][1] + "</td>";
                     }
                 }
@@ -1723,7 +1914,23 @@ function load_pivot_multi_level(table) {
             th = "";
             temp_unique = [];
 
-            col_header_names += "<th>" + colid_name[i] + "</th>";
+
+            var label_filter_arr = [];
+            table.find("tbody tr td:nth-child(" + colid_arr[i] + ")").each(function() {
+                if ($.inArray($(this).text(), label_filter_arr) == -1)
+                    label_filter_arr.push($(this).text());
+            });
+            label_filter_arr.sort();
+
+            var sel_option = "<option value='-1' selected='selected'>All " + colid_name[i].toLowerCase() + "</option>";
+            $.each(label_filter_arr, function(key, value) {
+                sel_option += "<option value='" + value + "'>" + value + "</option>"
+            });
+            sel_option = '<select class="select_clabel">' + sel_option + '</select>';
+
+            col_header_names += "<th data-attr-col-id='" + i + "' class='thead_col_el'>" + sel_option + "</th>";
+
+            // col_header_names += "<th>" + colid_name[i] + "</th>";
 
             table.find("tbody tr td:nth-child(" + colid_arr[i] + ")").each(function(index) {
                 var value = $(this).text().replace("~", "");
@@ -1776,7 +1983,8 @@ function load_pivot_multi_level(table) {
     // Start : Setup value dimension
     if (valid_arr.length > 0) {
 
-        $("#pivot_value_action").show();
+        $("#div_pivot_action").show();
+
         var val_action = $("#pivot_value_action").val();
 
         var el_arr = [];
@@ -1806,24 +2014,51 @@ function load_pivot_multi_level(table) {
             });
         });
 
+        // if(filid_arr.length > 0) {
+        //     filid_arr.forEach(function(item, index) {
+        //         table.find("tbody tr").each(function(rowindex) {
+        //             el_arr[rowindex] += $(this).find("td").eq(item - 1).text() + "~"
+        //         });
+        //     });
+        // }
+
         el_arr.sort();
 
         var values_arr_len = el_arr[0].split('~').length;
         var valid_arr_len = valid_arr.length;
         var row_col_len = values_arr_len - valid_arr_len;
 
-        for (i = 0; i < total_rows; i++) {
+        for (i = 0; i <= total_rows; i++) {
             td = "";
 
             var row_group = $("#tbl_multi_pivot_table tbody tr:nth-child(" + i + ") td.tbl_dimensions:last").attr("data-attr-group");
 
             if (row_group != null) {
-                for (j = 0; j < temp_unique.length; j++) {
 
+                var gt_count = 0,
+                    gt_sum = 0,
+                    gt_avg = 0,
+                    gt_min = [],
+                    gt_max = [];
+
+                for (j = 0; j < temp_unique.length; j++) {
                     var cid = rowid_arr.length + j + 1;
                     var cval = $("#tbl_multi_pivot_table thead tr:last-child th:nth-child(" + cid + ")").attr("data_attr_thead_colval");
 
                     var tdval = row_group + cval + "~";
+                    // var tdval = "";
+                    // if(filid_arr.length > 0) {
+                    //     var temp_fname = "";
+                    //     $(".tbl_pivot_actions").find("select.select_flabel").each(function(){
+                    //         var tmp = $(this).val();
+                    //         if(tmp != "-1")
+                    //         temp_fname += tmp +"~";
+                    //     });
+                    //     tdval = row_group + cval + "~" + temp_fname;
+                    // }
+                    // else {
+                    //     tdval = row_group + cval + "~";
+                    // }
 
                     var count = 0,
                         sum = 0,
@@ -1835,6 +2070,15 @@ function load_pivot_multi_level(table) {
                     count = $.grep(el_arr, function(elem) {
                         var temp = elem;
                         var split = elem.split("~");
+
+                        // if(filid_arr.length > 0) {
+                        //     var str_to_elimiate = 2 + parseInt(filid_arr.length);
+                        //     elem.split("~").slice(0, split.length - str_to_elimiate).join("~") + "~";
+                        // }
+                        // else {
+                        //     elem = elem.split("~").slice(0, split.length - 2).join("~") + "~";
+                        // }
+
                         elem = elem.split("~").slice(0, split.length - 2).join("~") + "~";
 
                         if (elem === tdval) {
@@ -1851,12 +2095,18 @@ function load_pivot_multi_level(table) {
                     else
                         avg = (sum / count).toFixed(2);
 
+                    gt_sum += sum;
+                    gt_count += count;
+
                     if (count == 0) count = "";
                     if (sum == 0) sum = "";
                     if (avg == 0) avg = "";
 
                     max = Math.max.apply(null, minmaxarr) == -Infinity ? "" : Math.max.apply(null, minmaxarr);
                     min = Math.min.apply(null, minmaxarr) == Infinity ? "" : Math.min.apply(null, minmaxarr);
+
+                    if (min > 0) gt_min.push(min);
+                    if (max > 0) gt_max.push(max);
 
                     var value_to_show = "";
                     switch (val_action) {
@@ -1882,12 +2132,106 @@ function load_pivot_multi_level(table) {
 
                     td += "<td data-attr-count='" + count + "' data-attr-sum='" + sum + "' data-attr-avg='" + avg + "' data-attr-min='" + min + "' data-attr-max='" + max + "'>" + value_to_show + "</td>";
                 }
+
+                gt_avg = (gt_sum / gt_count).toFixed(2);
+                var max = Math.max.apply(null, gt_max) == -Infinity ? "" : Math.max.apply(null, gt_max);
+                var min = Math.min.apply(null, gt_min) == Infinity ? "" : Math.min.apply(null, gt_min);
+                td += "<td data-attr-count='" + gt_count + "' data-attr-sum='" + gt_sum + "' data-attr-avg='" + gt_avg + "' data-attr-min='" + min + "' data-attr-max='" + max + "' class='td_th_gt'>" + gt_count + "</td>";
+
                 $("#tbl_multi_pivot_table tbody tr:nth-child(" + i + ")").append(td);
             }
         }
+
+        $("#tbl_multi_pivot_table thead tr").each(function(index) {
+            if (index == colid_arr.length)
+                $(this).append("<th class='td_th_gt'>Grand total</th>");
+            else
+                $(this).append("<th class='td_th_gt'></th>");
+        });
+
+        var row_gt_count_arr = [],
+            row_gt_sum_arr = [],
+            row_gt_avg_arr = [],
+            row_gt_min_arr = [],
+            row_gt_max_arr = [];
+
+        for (i = rowid_arr.length + 1; i <= parseInt(temp_unique.length) + parseInt(rowid_arr.length) + 1; i++) {
+            var rgtcount = 0,
+                rgtsum = 0,
+                rgtavg = [],
+                rgtmin = [],
+                rgtmax = [];
+
+            $("#tbl_multi_pivot_table tbody tr td:nth-child(" + i + ")").each(function() {
+                var count = $(this).attr("data-attr-count");
+                if (count == "") count = 0;
+                rgtcount = parseFloat(rgtcount) + parseFloat(count);
+
+                var sum = $(this).attr("data-attr-sum");
+                if (sum == "") sum = 0;
+                rgtsum = parseFloat(rgtsum) + parseFloat(sum);
+
+                var avg = $(this).attr("data-attr-avg");
+                if (avg != "") rgtavg.push(avg);
+
+                var min = $(this).attr("data-attr-min");
+                if (min != "") rgtmin.push(min);
+
+                var max = $(this).attr("data-attr-max");
+                if (max != "") rgtmax.push(max);
+            });
+
+            var avgsum = 0,
+                arravg = 0;
+            $.each(rgtavg, function() {
+                avgsum += parseFloat(this) || 0;
+            });
+            arravg = (avgsum / rgtavg.length).toFixed(2);
+
+            var minarr = Math.min.apply(null, rgtmin) == Infinity ? "" : Math.min.apply(null, rgtmin);
+            var maxarr = Math.max.apply(null, rgtmax) == Infinity ? "" : Math.max.apply(null, rgtmax);
+
+            row_gt_count_arr.push(rgtcount);
+            row_gt_sum_arr.push(rgtsum);
+            row_gt_avg_arr.push(arravg);
+            row_gt_min_arr.push(minarr);
+            row_gt_max_arr.push(maxarr);
+        }
+
+        var td = "";
+        for (i = 0; i < temp_unique.length + 2; i++) {
+            if (i == 0)
+                td += "<td class='td_th_gt' colspan='" + rowid_arr.length + "'>Grand total</td>";
+            else
+                td += "<td class='td_th_gt' data-attr-max='" + row_gt_max_arr[i - 1] + "' data-attr-min='" + row_gt_min_arr[i - 1] + "' data-attr-count='" + row_gt_count_arr[i - 1] + "' data-attr-sum='" + row_gt_sum_arr[i - 1] + "' data-attr-avg='" + row_gt_avg_arr[i - 1] + "'>" + row_gt_count_arr[i - 1] + "</td>";
+        }
+        td = "<tr>" + td + "</tr>";
+        $("#tbl_multi_pivot_table tbody").append(td);
+
     }
     // End : Setup value dimension
 
+    // Start : Setup filter dimension
+    if (filid_arr.length > 0) {
+        for (i = 0; i < filid_arr.length; i++) {
+            var filter_val_arr = [];
+            $("#div_pivot_filters table.tbl_pivot_actions select.select_flabel").each(function() {
+                if ($(this).val() != "-1")
+                    filter_val_arr.push($(this).val());
+            });
+            var filter_val = filter_val_arr.join().replace(",", "~");
+
+            $("#tbl_multi_pivot_table tbody tr").each(function() {
+                var val = $(this).find("td.tbl_dimensions:last").attr("data-attr-group") + filter_val;
+                if (row_data_arr.includes(val)) {
+                    $(this).css("color", "red");
+                }
+            });
+        }
+    }
+    // End : Setup filter dimension
+
+    enable_filter_selection(table);
 }
 
 function sort_table(f, n) {
@@ -1941,9 +2285,6 @@ function merge_table(row_length) {
         });
     }
 }
-
-
-
 
 // END
 // PIVOT TABLE 2.0
